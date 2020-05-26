@@ -5,8 +5,8 @@ const REVIEW_URL = "http:localhost:3000/api/v1/reviews/"
 
 fetchReviews()
 
-function fetchUsers(){
-    fetch(USER_URL)
+function fetchUsers(id=''){
+    fetch(USER_URL + id)
         .then(res => res.json())
         .then(users => renderUsers(users))
 }
@@ -19,18 +19,26 @@ function renderUsers(users){
     })
 }
 
-function fetchReviews(){
-    fetch(REVIEW_URL)
+function fetchReviews(id=''){
+    fetch(REVIEW_URL + id)
         .then(res => res.json())
-        .then(reviews => renderReviews(reviews))
+        .then(reviews => renderReview(reviews))
 }
 
-function renderReviews(reviews){
-    reviews.forEach((review) => {
-        const reviewObj = new Review(review.title, review.content, review.rating, review.fishing_spot_id, review.user_id)
+function renderReview(reviews){
+    if (Array.isArray(reviews) && reviews.length > 0) {
+        reviews.forEach((review) => {
+            const reviewObj = new Review(review.title, review.content, review.rating, review.fishing_spot_id, review.user_id)
+            const card = reviewObj.renderReview()
+            rendersCard(card)
+        })
+    } else if (!Array.isArray(reviews)) {
+        const reviewObj = new Review(reviews.title, reviews.content, reviews.rating, reviews.fishing_spot_id, reviews.user_id)
         const card = reviewObj.renderReview()
         rendersCard(card)
-    })
+    } else {
+        console.log('error: inspect renderReview')
+    }
 }
 
 function rendersCard(card){
