@@ -18,34 +18,63 @@ class FishingSpot {
 
     renderSpot() {
         // create card and put user title, username, and review content on it
-        // if(this.is_active){
-            // create card and put user name/username on it
+        if(this.is_active){
+            // Site image, name, and link to info page
             this.element.className = 'card'
+            const image = document.createElement('img')
+            image.src = this.image
             const linkToSiteInfo = document.createElement('a')
             linkToSiteInfo.href = this.site_info
             const name = document.createElement('h3')
             name.innerText = this.name
-            // https://www.google.com/maps/search/?api=1&query=<lat>,<lng>
             const location = document.createElement('p')
+
+            // Location info:
+            // https://www.google.com/maps/search/?api=1&query=<lat>,<lng>
             const linkToLocation = document.createElement('a')
             linkToLocation.innerText = 'Address'
             linkToLocation.href = `https://www.google.com/maps/search/?api=1&query=${this.latitude},${this.longitude}`
+            const br1 = document.createElement('br')
 
+            // Location info:
+            const accessSpan = document.createElement('span')
+            accessSpan.innerText = `Public access: ${this.public_access}`  
+            const br2 = document.createElement('br')
             
+            // Fish info:
+            const fishList = document.createElement('span')
+            fishList.innerText = `Fish species:`  
+            const fishUl = document.createElement('ul')
+            const br3 = document.createElement('br')
+
+            this.fish.forEach((fish) => {
+                const fishLi = document.createElement('li')
+                fishLi.innerText = fish.species
+                fishUl.appendChild(fishLi)
+            })
+
+            const delBtn = document.createElement('button')
+            delBtn.innerText = "Delete"
+            // TODO this button isn't actually deleting from db
+            delBtn.addEventListener('click', () => {
+                this.deleteFishingSpot(this.id)
+                this.element.remove()
+            })
+
+            fishList.appendChild(fishUl)
             linkToSiteInfo.appendChild(name)
-            this.element.append(linkToSiteInfo, linkToLocation)
-            // this.fish.forEach(fish => this.listFishingSpot(fish, fishUl))
-                
+            this.element.append(image, linkToSiteInfo, linkToLocation, br1, accessSpan, br2, fishList, br3, delBtn)
+
             return this.element
-        // }
+        }
+    }
+
+    deleteFishingSpot(id) {
+        fetch(SPOT_URL + id, {method: "DELETE"})
+        .then(res => res.json())
+        .then(res => console.log(res))
     }
     
-    // listFishingSpot(fish, ul){
-    //     const fishLi = document.createElement('li')
-    //     fishLi.innerText = fish.species
-    //     ul.appendChild(fishLi)
-    // }
-
 }
 
 function addNewFishingSpot(spot){
@@ -81,8 +110,3 @@ function modifyFishingSpot(id, params){
     .then(res => console.log(res))
 }
 
-function deleteFishingSpot(id){
-    fetch(SPOT_URL + id, {method: "DELETE"})
-    .then(res => res.json())
-    .then(res => console.log(res))
-}
