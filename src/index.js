@@ -3,7 +3,7 @@ const USER_URL = "http:localhost:3000/api/v1/users/"
 const SPOT_URL = "http:localhost:3000/api/v1/fishing_spots/"
 const REVIEW_URL = "http:localhost:3000/api/v1/reviews/"
 
-fetchReviews()
+fetchUsers()
 
 function fetchUsers(id=''){
     fetch(USER_URL + id)
@@ -42,6 +42,6 @@ function renderReview(reviews){
 }
 
 function rendersCard(card){
-    const mainContainer = document.querySelector('main')
-    mainContainer.appendChild(card)
+    const container = document.querySelector('.ui.cards')
+    container.appendChild(card)
 }
