@@ -4,8 +4,6 @@ const SPOT_URL = "http:localhost:3000/api/v1/fishing_spots/"
 const REVIEW_URL = "http:localhost:3000/api/v1/reviews/"
 const FISH_URL = BASE_URL + "fish/"
 
-//modifyFishingSpot(81,{is_active: true})
-
 fetchFishingSpots()
 
 function fetchFishingSpots(id=""){

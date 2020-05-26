@@ -9,6 +9,7 @@ class User {
         this.element = document.createElement('card')
     }
 
+
     // have to pass in spots and reviews as they don't seem to want to come in with the user. =
     // is this execution context issue? can we bind?
     renderUser(spots, reviews){
@@ -39,6 +40,59 @@ class User {
         
         return this.element
     }
+
+    // attempt to add styling below. Copied renderUser to test
+        // <div class="ui fluid container">
+        //     <div class="ui cards">
+        //       <div class="card">
+        //         <div class="content">
+        //           <div class="header">Insert name</div>
+        //           <div class="description">bio goes here</div>
+        //         </div>
+        //         <div class="ui bottom attached button">
+        //           <i class="add icon"></i>
+        //           Button text
+        //         </div>
+        //       </div>
+        //   </div>
+
+    // renderUser(spots, reviews){
+    //     // create card and put user name/username on it
+    //     this.element.className = 'card'
+    //     const content = document.createElement('div')
+    //     content.className = 'content'
+    //     const name = document.createElement('div')
+    //     name.className = 'header'
+    //     name.innerText = this.name
+    //     const details = document.createElement('div')
+    //     details.className = 'description'
+    //     details.innerText = `${this.username} has ${reviews.length} reviews.`
+
+    //     // // create li tags for reviews & spots
+    //     // const review_count = document.createElement('li')
+    //     // review_count.innerText = `${reviews.length} reviews`
+
+    //     // const fav_count = document.createElement('li')
+    //     // fav_count.innerText = `${spots.length} favorited spots`
+
+    //     // expand button for user detail
+    //     const btn = document.createElement('div')
+    //     btn.className = 'ui.bottom.attached.button'
+    //     const icon = document.createElement('i')
+    //     icon.className = 'add.icon'
+    //     // const expandBtn = document.createElement('button')
+    //     icon.innerText = 'Expand'
+    //     // expandBtn.addEventListener('click', () => {
+    //     //     this.expandUser(spots, reviews, div)
+    //     // })
+
+    //     // append elemnts to card and return the finished element
+    //     btn.appendChild(icon)
+    //     content.append(name, details)
+    //     this.element.append(content, btn)
+        
+    //     return this.element
+    // }
 
     expandUser(spots, reviews, div) {
         // wipes children when user clicks expand again (to close)
