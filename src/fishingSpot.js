@@ -1,49 +1,50 @@
 class FishingSpot {
     
-    constructor(params) {
-        this.id = params.id
-        this.name = params.name
-        this.public_access = params.public_access
-        this.latitude  = params.latitude
-        this.longitude = params.longitude
-        this.site_info = params.site_info
-        this.user_id  = params.user_id
-        this.is_active = params.is_active
-        this.image = params.image
-        this.fish = params.fish
+    constructor (id, name, longitude, latitude, image, public_access, user_id, site_info, is_active, fish, created_at, updated_at) {
+        this.id = id
+        this.name = name
+        this.latitude  = latitude
+        this.longitude = longitude
+        this.image = image
+        this.public_access = public_access
+        this.user_id  = user_id    // user who created this spot in app
+        this.site_info = site_info
+        this.is_active = is_active
+        this.fish = fish    // fish = array of fish this spot has
+        this.created_at = created_at
+        this.updated_at = updated_at
         this.element = document.createElement('card')
     }
 
-
     renderSpot() {
         // create card and put user title, username, and review content on it
-        if(this.is_active){
+        // if(this.is_active){
             // create card and put user name/username on it
             this.element.className = 'card'
-            const speciesP = document.createElement('p')
-            speciesP.innerText = this.name
-            speciesP.dataset.id = this.id
-            const fishImg = document.createElement('img')
-            fishImg.src = this.image
-            const infoUl = document.createElement('ul')
-            infoUl.innerText = this.public_access
-            const location = document.createElement('ul')
-            location.innerText = `Latitude: ${this.latitude} Longitude: ${this.longitude}`
-            const fishUl = document.createElement('ul')
-            fishUl.innerText = "Fish Species:"
+            const linkToSiteInfo = document.createElement('a')
+            linkToSiteInfo.href = this.site_info
+            const name = document.createElement('h3')
+            name.innerText = this.name
+            // https://www.google.com/maps/search/?api=1&query=<lat>,<lng>
+            const location = document.createElement('p')
+            const linkToLocation = document.createElement('a')
+            linkToLocation.innerText = 'Address'
+            linkToLocation.href = `https://www.google.com/maps/search/?api=1&query=${this.latitude},${this.longitude}`
+
             
-            this.element.append(speciesP, fishImg, infoUl, location, fishUl)
-            this.fish.forEach(fish => this.listFishingSpot(fish, fishUl))
+            linkToSiteInfo.appendChild(name)
+            this.element.append(linkToSiteInfo, linkToLocation)
+            // this.fish.forEach(fish => this.listFishingSpot(fish, fishUl))
                 
             return this.element
-        }
+        // }
     }
     
-    listFishingSpot(fish, ul){
-        const fishLi = document.createElement('li')
-        fishLi.innerText = fish.species
-        ul.appendChild(fishLi)
-    }
+    // listFishingSpot(fish, ul){
+    //     const fishLi = document.createElement('li')
+    //     fishLi.innerText = fish.species
+    //     ul.appendChild(fishLi)
+    // }
 
 }
 
