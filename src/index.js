@@ -2,8 +2,39 @@ const BASE_URL = "http:localhost:3000/api/v1/"
 const USER_URL = "http:localhost:3000/api/v1/users/"
 const SPOT_URL = "http:localhost:3000/api/v1/fishing_spots/"
 const REVIEW_URL = "http:localhost:3000/api/v1/reviews/"
+const FISH_URL = BASE_URL + "fish/"
 
-fetchReviews()
+//modifyFishingSpot(81,{is_active: true})
+
+fetchFishingSpots()
+
+function fetchFishingSpots(id=""){
+    fetch(SPOT_URL + id)
+        .then(res => res.json())
+        .then(spots => renderFishingSpot(spots))
+}
+
+function fetchFish(id=''){
+    fetch(FISH_URL + id)
+        .then(res => res.json())
+        .then(fish => renderFish(fish))
+}
+
+function renderFishingSpot(spots){
+    spots.forEach(spot => {
+        const newSpot = new FishingSpot(spot)
+        const card = newSpot.renderSpot()
+        rendersCard(card)
+    })
+}
+
+function renderFish(fish){
+    fish.forEach((fish) => {
+        const newFish = new Fish(fish.id, fish.species, fish.description, fish.is_active, fish.image, fish.fishing_spots)
+        const card = newFish.renderFish()
+        rendersCard(card)
+    })
+}
 
 function fetchUsers(id=''){
     fetch(USER_URL + id)
@@ -42,6 +73,8 @@ function renderReview(reviews){
 }
 
 function rendersCard(card){
-    const mainContainer = document.querySelector('main')
-    mainContainer.appendChild(card)
+    if(card){
+        const mainContainer = document.querySelector('main')
+        mainContainer.appendChild(card)
+    }
 }
