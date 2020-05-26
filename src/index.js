@@ -9,7 +9,7 @@ fetchFishingSpots()
 function fetchFishingSpots(id=""){
     fetch(SPOT_URL + id)
         .then(res => res.json())
-        .then(spots => renderFishingSpot(spots))
+        .then(spots => renderFishingSpots(spots))
 }
 
 function fetchFish(id=''){
@@ -18,10 +18,10 @@ function fetchFish(id=''){
         .then(fish => renderFish(fish))
 }
 
-function renderFishingSpot(spots){
+function renderFishingSpots(spots){
     spots.forEach(spot => {
-        const newSpot = new FishingSpot(spot)
-        const card = newSpot.renderSpot()
+        const spotObj = new FishingSpot(spot.id, spot.name, spot.longitude, spot.latitude, spot.image, spot.public_access, spot.user_id, spot.site_info, spot.is_active, spot.fish, spot.created_at, spot.updated_at)
+        const card = spotObj.renderSpot()
         rendersCard(card)
     })
 }
