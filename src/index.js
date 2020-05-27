@@ -121,7 +121,7 @@ function fetchFish(id=''){
 
 function renderFishingSpots(spots){
     spots.forEach(spot => {
-        const spotObj = new FishingSpot(spot.id, spot.name, spot.longitude, spot.latitude, spot.image, spot.public_access, spot.user_id, spot.site_info, spot.is_active, spot.fish, spot.created_at, spot.updated_at)
+        const spotObj = new FishingSpot(spot.id, spot.name, spot.longitude, spot.latitude, spot.image, spot.image_small, spot.public_access, spot.user_id, spot.site_info, spot.is_active, spot.fish, spot.created_at, spot.updated_at)
         const card = spotObj.renderSpot()
         rendersCard(card)
     })
