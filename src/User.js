@@ -126,6 +126,23 @@ class User {
         }
     }
 
+    addNewUser(obj){
+        fetch(USER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: this.name,
+                bio: this.bio,
+                username: this.username,
+                email: this.email
+            })
+        })
+        .then(res => res.json())
+        .then(res => console.log('New user saved'))
+    }
+
     removeChildren(tag) {
         while (tag.lastChild) {
             tag.removeChild(tag.lastChild)
