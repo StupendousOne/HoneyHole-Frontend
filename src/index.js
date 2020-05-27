@@ -1,16 +1,18 @@
-const BASE_URL = "http:localhost:3000/api/v1/"
-const USER_URL = "http:localhost:3000/api/v1/users/"
-const SPOT_URL = "http:localhost:3000/api/v1/fishing_spots/"
-const REVIEW_URL = "http:localhost:3000/api/v1/reviews/"
+const BASE_URL = "http://localhost:3000/api/v1/"
+const USER_URL = "http://localhost:3000/api/v1/users/"
+const SPOT_URL = "http://localhost:3000/api/v1/fishing_spots/"
+const REVIEW_URL = "http://localhost:3000/api/v1/reviews/"
 const FISH_URL = BASE_URL + "fish/"
 
 let USERS = []
-let currentUser
+let CURRENT_USER
+const MAIN_CONTAINER = document.querySelector('main')
 
 init()
 
 function init () {
-    fetchUsers().then(userLogin)
+    fetchFishingSpots()
+    // fetchUsers().then(userLogin)
 }
 
 function userLogin() {
@@ -21,15 +23,12 @@ function userLogin() {
     let login = document.createElement('button')
     login.innerText = "Select user"
     login.addEventListener('click', (e) => {
-        let usersUl = document.createElement('ul')
-        // TODO: this is not clearing the user names on second click
-        if (usersUl.lastChild) {
-            // while (usersUl.lastChild) {
-            //     usersUl.removeChild(usersUl.lastChild)
-            // } 
-            debugger;
-            usersUl.remove
+        let parent = e.target.parentElement    // parent is actually same as card
+        let parentUl = parent.querySelector('ul')   // attempt to find a ul element on the card
+        if (parentUl) {
+            parent.removeChild(parentUl)
         } else { 
+            let usersUl = document.createElement('ul')
             USERS.forEach((user) => {
                 let userLi = document.createElement('li')
                 const a = document.createElement('a') // set up link for user
@@ -38,8 +37,9 @@ function userLogin() {
                 a.href = '#' // makes it looks linky
                 a.onclick = e => {
                     e.preventDefault(); // don't follow link
-                    userID = e.target.dataset.id
-                    launchIntoAppAsUser(userID)
+                    CURRENT_USER = user.id
+                    clearMainContainer()
+                    fetchFishingSpots()
                 }
                 userLi.appendChild(a)
                 usersUl.appendChild(userLi)
@@ -51,8 +51,8 @@ function userLogin() {
     let signUp = document.createElement('button')
     signUp.innerText = "Sign up"
     signUp.onclick = e => {
+        clearMainContainer()
         signUpUser()
-        card.remove()
     }
     // append items and render card
     card.append(header, login, signUp)
@@ -84,7 +84,6 @@ function signUpUser() {
     bio.setAttribute("type", "text")
 
 
-    console.log(card)
     // submit and go to spots index view
     let submit = document.createElement('button')
     submit.innerText = "Submit"
@@ -92,15 +91,15 @@ function signUpUser() {
         e.preventDefault()
         let userObj = new User(name.value, bio.value, usernameInput.value, email.value)
         userObj.addNewUser()
+        clearMainContainer()
         fetchFishingSpots()
-        card.remove()
     })
     // back button and wipe nodes 
     let back = document.createElement('button')
     back.innerText = "Back"
     back.onclick = e => {
+        clearMainContainer()
         userLogin()
-        card.remove()
     }
     // append and render
     signUpForm.append(nameLabel, name, usernameLabel, usernameInput, emailLabel, email, bioLabel, bio, submit)
@@ -177,7 +176,11 @@ function renderReviews(reviews){
 
 function rendersCard(card){
     if(card){
-        const mainContainer = document.querySelector('main')
-        mainContainer.appendChild(card)
+        MAIN_CONTAINER.appendChild(card)
     }
+}
+
+function clearMainContainer() {
+    while (MAIN_CONTAINER.lastChild)
+        MAIN_CONTAINER.removeChild(MAIN_CONTAINER.lastChild)
 }

@@ -57,7 +57,7 @@ class FishingSpot {
             delBtn.innerText = "Delete"
             // TODO this button isn't actually deleting from db
             delBtn.addEventListener('click', () => {
-                this.deleteFishingSpot(this.id)
+                this.deleteFishingSpot()
                 this.element.remove()
             })
 
@@ -69,8 +69,8 @@ class FishingSpot {
         }
     }
 
-    deleteFishingSpot(id) {
-        fetch(SPOT_URL + id, {method: "DELETE"})
+    deleteFishingSpot() {
+        fetch(SPOT_URL + this.id, {method: "DELETE"})
         .then(res => res.json())
         .then(res => console.log(res))
     }
