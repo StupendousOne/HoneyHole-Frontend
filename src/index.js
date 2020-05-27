@@ -22,11 +22,13 @@ function userLogin() {
     login.innerText = "Select user"
     login.addEventListener('click', (e) => {
         let usersUl = document.createElement('ul')
-        // TODO: this is not clearing the user names on second clickjj
+        // TODO: this is not clearing the user names on second click
         if (usersUl.lastChild) {
-            while (usersUl.lastChild) {
-                usersUl.removeChild(usersUl.lastChild)
-            } 
+            // while (usersUl.lastChild) {
+            //     usersUl.removeChild(usersUl.lastChild)
+            // } 
+            debugger;
+            usersUl.remove
         } else { 
             USERS.forEach((user) => {
                 let userLi = document.createElement('li')
@@ -42,8 +44,8 @@ function userLogin() {
                 userLi.appendChild(a)
                 usersUl.appendChild(userLi)
             })
+            card.appendChild(usersUl)
         }
-        card.appendChild(usersUl)
     })
     // signUp route responds to click and launches signUp function
     let signUp = document.createElement('button')
@@ -61,31 +63,45 @@ function signUpUser() {
     let card = document.createElement('card')
     let header = document.createElement('h3')
     header.innerText = "Sign Up Below"
-    let form = document.createElement('FORM')
+    let signUpForm = document.createElement('form')
     let nameLabel = document.createElement('label')
     nameLabel.innerText = 'Name:'
-    let name = document.createElement('INPUT')
+    nameLabel.htmlFor = 'name'
+    let name = document.createElement('input')
+    name.id = 'login-name'
     name.setAttribute("type", "text")
     let usernameLabel = document.createElement('label')
     usernameLabel.innerText = 'Username:'
-    let usernameInput = document.createElement('INPUT')
+    let usernameInput = document.createElement('input')
     usernameInput.setAttribute("type", "text")
     let emailLabel = document.createElement('label')
     emailLabel.innerText = 'Email:'
-    let email = document.createElement('INPUT')
+    let email = document.createElement('input')
     email.setAttribute("type", "text")
     let bioLabel = document.createElement('label')
     bioLabel.innerText = 'Tell us about yourself:'
     let bio = document.createElement('INPUT')
     bio.setAttribute("type", "text")
 
+    // let userObj = {
+    //     name: name.value,
+    //     bio: bio.value,
+    //     username: usernameInput.value,
+    //     email: email.value
+    // }
+
+    console.log(card)
     // submit and go to spots index view
     let submit = document.createElement('button')
     submit.innerText = "Submit"
-    submit.onclick = e => {
+    signUpForm.addEventListener('submit', function(e) {
+        e.preventDefault()
+        let userObj = new User(name.value, bio.value, usernameInput.value, email.value)
+        debugger;
+        userObj.addNewUser()
         fetchFishingSpots()
         card.remove()
-    }
+    })
     // back button and wipe nodes 
     let back = document.createElement('button')
     back.innerText = "Back"
@@ -94,8 +110,8 @@ function signUpUser() {
         card.remove()
     }
     // append and render
-    form.append(nameLabel, name, usernameLabel, usernameInput, emailLabel, email, bioLabel, bio)
-    card.append(header, form, submit, back)
+    signUpForm.append(nameLabel, name, usernameLabel, usernameInput, emailLabel, email, bioLabel, bio, submit)
+    card.append(header, signUpForm, back)
     rendersCard(card)
 }
 
@@ -132,7 +148,7 @@ function fetchUsers(id=''){
         .then(res => res.json())
         .then(json => {
             USERS = json
-            return json;
+            return json
         })
         // .then(users => renderUsers(users))
 }
