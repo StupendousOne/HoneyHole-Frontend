@@ -83,12 +83,6 @@ function signUpUser() {
     let bio = document.createElement('INPUT')
     bio.setAttribute("type", "text")
 
-    // let userObj = {
-    //     name: name.value,
-    //     bio: bio.value,
-    //     username: usernameInput.value,
-    //     email: email.value
-    // }
 
     console.log(card)
     // submit and go to spots index view
@@ -97,7 +91,6 @@ function signUpUser() {
     signUpForm.addEventListener('submit', function(e) {
         e.preventDefault()
         let userObj = new User(name.value, bio.value, usernameInput.value, email.value)
-        debugger;
         userObj.addNewUser()
         fetchFishingSpots()
         card.remove()
@@ -150,7 +143,6 @@ function fetchUsers(id=''){
             USERS = json
             return json
         })
-        // .then(users => renderUsers(users))
 }
 
 function renderUsers(users){
