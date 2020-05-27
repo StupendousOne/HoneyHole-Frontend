@@ -54,22 +54,45 @@ class FishingSpot {
                 fishUl.appendChild(fishLi)
             })
 
+            // edit fishing spot
+            // QUESTION: how to launch/display a modal from here to edit??
+            // 
+            const editBtn = document.createElement('button')
+            editBtn.innerText = "Edit"
+            editBtn.addEventListener('click', (e) => {
+                console.log(e.target)
+                // this.getSpotDataFromUser(this.id)
+            })
+            
+            // remove fishing spot (toggle is_active status)
             const delBtn = document.createElement('button')
             delBtn.innerText = "Delete"
-            // TODO this button isn't actually deleting from db
             delBtn.addEventListener('click', () => {
                 this.deleteFishingSpot()
                 this.element.remove()
             })
 
+            // append everything here
             fishList.appendChild(fishUl)
             linkToSiteInfo.appendChild(name)
-            this.element.append(image, linkToSiteInfo, linkToLocation, br1, accessSpan, br2, fishList, br3, delBtn)
+            this.element.append(image, linkToSiteInfo, linkToLocation, br1, accessSpan, br2, fishList, br3, delBtn, editBtn)
 
             return this.element
         }
     }
 
+    modifyFishingSpot(id, params){
+        fetch(SPOT_URL + id, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(params)
+        })
+        .then(res => res.json())
+        .then(res => console.log(res))
+    }
+  
     deleteFishingSpot() {
         fetch(SPOT_URL + this.id, {method: "DELETE"})
         .then(res => res.json())
@@ -99,15 +122,4 @@ function addNewFishingSpot(spot){
     .then(res => console.log(res))
 }
 
-function modifyFishingSpot(id, params){
-    fetch(SPOT_URL + id, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(params)
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
-}
 
