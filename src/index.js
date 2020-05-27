@@ -148,13 +148,13 @@ function renderUsers(users){
 function fetchReviews(id=''){
     fetch(REVIEW_URL + id)
         .then(res => res.json())
-        .then(reviews => renderReview(reviews))
+        .then(reviews => renderReviews(reviews))
 }
 
-function renderReview(reviews){
+function renderReviews(reviews){
     if (Array.isArray(reviews) && reviews.length > 0) {
         reviews.forEach((review) => {
-            const reviewObj = new Review(review.title, review.content, review.rating, review.fishing_spot_id, review.user_id)
+            const reviewObj = new Review(review.title, review.content, review.rating, review.reviewed_fishing_spots, review.user)
             const card = reviewObj.renderReview()
             rendersCard(card)
         })

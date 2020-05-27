@@ -69,9 +69,21 @@ body {
     border-radius: 10px;
   }
   
-  p {
-    font-size: 1.5em;
+  h1 {
+    font-size: 1.2em;
     color: black;
+    font-family: Helvetica;
+  }
+
+  a {
+    font-size: 0.5em;
+    color: blue;
+    font-family: Helvetica;
+  }
+
+  p {
+    font-size: 0.5em;
+    color: red;
     font-family: Helvetica;
   }
   
