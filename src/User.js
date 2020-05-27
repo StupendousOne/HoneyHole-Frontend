@@ -35,7 +35,7 @@ class User {
             this.expandUser(spots, reviews, div)
         })
 
-        // append elemnts to card and return the finished element
+        // append elements to card and return the finished element
         this.element.append(name, username, review_count, fav_count, expandBtn, div)
         
         return this.element
