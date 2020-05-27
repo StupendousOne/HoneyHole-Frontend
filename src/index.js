@@ -84,6 +84,7 @@ function signUpUser() {
     submit.innerText = "Submit"
     submit.onclick = e => {
         fetchFishingSpots()
+        card.remove()
     }
     // back button and wipe nodes 
     let back = document.createElement('button')
