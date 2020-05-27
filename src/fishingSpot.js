@@ -1,11 +1,12 @@
 class FishingSpot {
     
-    constructor (id, name, longitude, latitude, image, public_access, user_id, site_info, is_active, fish, created_at, updated_at) {
+    constructor (id, name, longitude, latitude, image, image_small, public_access, user_id, site_info, is_active, fish, created_at, updated_at) {
         this.id = id
         this.name = name
         this.latitude  = latitude
         this.longitude = longitude
         this.image = image
+        this.image_small = image_small
         this.public_access = public_access
         this.user_id  = user_id    // user who created this spot in app
         this.site_info = site_info
@@ -22,7 +23,7 @@ class FishingSpot {
             // Site image, name, and link to info page
             this.element.className = 'card'
             const image = document.createElement('img')
-            image.src = this.image
+            image.src = this.image_small
             const linkToSiteInfo = document.createElement('a')
             linkToSiteInfo.href = this.site_info
             const name = document.createElement('h3')
@@ -67,7 +68,7 @@ class FishingSpot {
             const delBtn = document.createElement('button')
             delBtn.innerText = "Delete"
             delBtn.addEventListener('click', () => {
-                this.deleteFishingSpot(this.id)
+                this.deleteFishingSpot()
                 this.element.remove()
             })
 
@@ -78,10 +79,6 @@ class FishingSpot {
 
             return this.element
         }
-    }
-
-    // how do we pop up a new card? include a form on it? prepopulate with current data?
-    getSpotDataFromUser() {
     }
 
     modifyFishingSpot(id, params){
@@ -95,9 +92,9 @@ class FishingSpot {
         .then(res => res.json())
         .then(res => console.log(res))
     }
-
-    deleteFishingSpot(id) {
-        fetch(SPOT_URL + id, {method: "DELETE"})
+  
+    deleteFishingSpot() {
+        fetch(SPOT_URL + this.id, {method: "DELETE"})
         .then(res => res.json())
         .then(res => console.log(res))
     }
