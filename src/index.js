@@ -12,9 +12,8 @@ const MAIN_CONTAINER = document.querySelector('main')
 init()
 
 function init () {
-    // fetchFishingSpots().then(addNewFishingSpot)
-    // fetchFishingSpots()
-    fetchFish().then(addNewFishingSpot)
+    // fetchFish().then(addNewFishingSpot)
+    fetchFishingSpots()
     // fetchUsers().then(userLogin)
 }
 
@@ -111,7 +110,11 @@ function signUpUser() {
 
 // TODO: wire this function up to modal from main menu pull click
 // needs a button to submit or go back
-function addNewFishingSpot() {
+function addNewFishingSpot(spotObj) {
+    if (!spotObj.id) {
+        spotObj = new FishingSpot()
+    }
+    console.log(spotObj)
     let card = document.createElement('card')
     let header = document.createElement('h3')
     header.innerText = "Add New Fishing Spot"
@@ -120,47 +123,53 @@ function addNewFishingSpot() {
     let nameLabel = document.createElement('label')
     nameLabel.innerText = 'Name:'
     let name = document.createElement('input')
+    name.value = (spotObj.name)
     name.setAttribute("type", "text")
     // latitude
     let latLabel = document.createElement('label')
     latLabel.innerText = 'Latitude:'
     let latitude = document.createElement('input')
     latitude.setAttribute("type", "text")
+    latitude.value = (spotObj.latitude)
     // longitude
     let longLabel = document.createElement('label')
     longLabel.innerText = 'Longitude:'
     let longitude = document.createElement('input')
     longitude.setAttribute("type", "text")
+    longitude.value = (spotObj.longitude)
     // image url
     let imgLabel = document.createElement('label')
     imgLabel.innerText = 'Image url:'
     let image = document.createElement('input')
     image.setAttribute("type", "text")
+    image.value = (spotObj.image) 
     // public_access
     let accessLabel = document.createElement('label')
     accessLabel.innerText = 'Public access notes:'
     let public_access = document.createElement('input')
-    image.setAttribute("type", "text")
+    public_access.setAttribute("type", "text")
+    public_access.value = (spotObj.public_access) 
     // link to site info
     let siteLabel = document.createElement('label')
     siteLabel.innerText = 'Link to site info page'
     let site_info = document.createElement('input')
     site_info.setAttribute("type", "text")
+    site_info.value = (spotObj.site_info) 
 
-    // fish species menu
+    // fish species menu. user checks boxes for all that exist at this spot
     let fishHeader = document.createElement('h3')
     fishHeader.innerText = "Select fish species"
     fishUl = document.createElement('ul')
     FISH.forEach((fish) => {
         fishLabel = document.createElement('label')
+        fishLabel.innerText = fish.species
         fishCheck = document.createElement('input')
         fishCheck.setAttribute("type", "checkbox")
-        fishCheck.setAttribute("name", "${fish.species}")
         fishCheck.dataset.id = fish.id
-        fishLabel.innerText = fish.species
         br1 = document.createElement('br')
-        br2 = document.createElement('br')
         fishUl.append(fishCheck, fishLabel, br1)
+        fishCheck.addEventListener('change', function(e) {
+        })
     })
 
     // submit and go to spots index view
@@ -170,13 +179,15 @@ function addNewFishingSpot() {
     spotForm.addEventListener('submit', function(e) {
         e.preventDefault()
         clearMainContainer()
+        debugger;
         addSpot({
             name: name.value,
             longitude: longitude.value,
             latitude: latitude.value,
             image: image.value,
             public_access: public_access.value,
-            user_id: CURRENT_USER,
+            // user_id: CURRENT_USER,
+            user_id: 2256,
             site_info: site_info.value
         })
     })

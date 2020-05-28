@@ -1,6 +1,6 @@
 class FishingSpot {
     
-    constructor (id, name, longitude, latitude, image, image_small, public_access, user_id, site_info, is_active, fish, created_at, updated_at) {
+    constructor (id, name='', longitude='', latitude='', image='', image_small='', public_access='', user_id='', site_info='', is_active, fish=[], created_at, updated_at) {
         this.id = id
         this.name = name
         this.latitude  = latitude
@@ -60,7 +60,7 @@ class FishingSpot {
             const editBtn = document.createElement('button')
             editBtn.innerText = "Edit"
             editBtn.addEventListener('click', (e) => {
-                console.log(e.target)
+                addNewFishingSpot(this)
                 // this.getSpotDataFromUser(this.id)
             })
             
@@ -81,7 +81,7 @@ class FishingSpot {
         }
     }
 
-    modifyFishingSpot(id, params){
+    modifyFishingSpot(spotObj){
         fetch(SPOT_URL + id, {
             method: "PATCH",
             headers: {
@@ -91,6 +91,7 @@ class FishingSpot {
         })
         .then(res => res.json())
         .then(res => console.log(res))
+        .then(res => fetchFishingSpots())
     }
   
     deleteFishingSpot() {
@@ -100,7 +101,7 @@ class FishingSpot {
     }
     
 }
-
+// what if instead of writing each input and condensed it to look at an object. second argument can tell function if new or edit. If new, create new fishObj w/ empty fields which can be passed. If edit, it would use the passed in object.
 function addSpot(params){
     fetch(SPOT_URL, {
         method: "POST",
