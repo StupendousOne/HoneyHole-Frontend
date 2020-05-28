@@ -9,6 +9,11 @@ let FISH = []
 let CURRENT_USER
 const MAIN_CONTAINER = document.querySelector('main')
 
+// counter to how many columns have been made in the current row(max 3 for our purposes)
+// start column count maxed out so a new row is created instantly
+let COLUMN_COUNT = 4
+let CURRENT_ROW
+
 init()
 
 function init () {
@@ -277,8 +282,33 @@ function renderReviews(reviews){
 
 function rendersCard(card){
     if(card){
-        MAIN_CONTAINER.appendChild(card)
+        if(COLUMN_COUNT < 4){
+            // if row has less than three columns 
+            // increment COLUMN_COUNT and create column
+            COLUMN_COUNT++
+            createColumn(card)
+        } else {
+            // if row is full create a new row 
+            // then create a column and set column count to 1
+            createRow()
+            createColumn(card)
+            COLUMN_COUNT = 1
+        }
     }
+}
+
+function createColumn(card){
+    column = document.createElement("div")
+    column.className = "col-lg-3"
+    column.appendChild(card)
+    CURRENT_ROW.appendChild(column)
+}
+
+function createRow(){
+    CURRENT_ROW = document.createElement("div")
+    CURRENT_ROW.classList.add("row")
+    CURRENT_ROW.classList.add("mt-3")
+    MAIN_CONTAINER.appendChild(CURRENT_ROW)
 }
 
 function clearMainContainer() {

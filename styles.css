@@ -7,10 +7,11 @@ body {
     background-color: #4caf50;
     margin: 0 auto;
     height: 50px;
+    box-shadow: 5px 5px grey;
   }
   
   header h2 {
-    padding: 10px;
+    padding: 5px;
     margin: 0;
   }
   
@@ -62,11 +63,7 @@ body {
 
   div.card {
     background-color: #eeeeee;
-    height: 250px;
-    width: 300px;
     box-shadow: 10px 10px grey;
-    padding: 10px;
-    border-radius: 10px;
   }
   
   h1 {
@@ -82,9 +79,7 @@ body {
   }
 
   p {
-    font-size: 0.5em;
-    color: red;
-    font-family: Helvetica;
+    font-size: 12px;
   }
   
   li {
