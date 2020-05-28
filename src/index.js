@@ -18,101 +18,8 @@ let CURRENT_ROW
 init()
 
 function init () {
-    fetchFish().then(fetchFishingSpots())
-    // fetchUsers().then(userLogin)
+    fetchUsers().then(userLogin)
 }
-
-function userLogin() {
-    let card = document.createElement('card')
-    let header = document.createElement('h3')
-    header.innerText = "Login | Sign Up"
-
-    let login = document.createElement('button')
-    login.innerText = "Select user"
-    login.addEventListener('click', (e) => {
-        let parent = e.target.parentElement    // parent is actually same as card
-        let parentUl = parent.querySelector('ul')   // attempt to find a ul element on the card
-        if (parentUl) {
-            parent.removeChild(parentUl)
-        } else { 
-            let usersUl = document.createElement('ul')
-            USERS.forEach((user) => {
-                let userLi = document.createElement('li')
-                const a = document.createElement('a') // set up link for user
-                a.innerText = user.username
-                a.dataset.id = user.id
-                a.href = '#' // makes it looks linky
-                a.onclick = e => {
-                    e.preventDefault(); // don't follow link
-                    CURRENT_USER = user.id
-                    clearMainContainer()
-                    fetchFishingSpots()
-                }
-                userLi.appendChild(a)
-                usersUl.appendChild(userLi)
-            })
-            card.appendChild(usersUl)
-        }
-    })
-    // signUp route responds to click and launches signUp function
-    let signUp = document.createElement('button')
-    signUp.innerText = "Sign up"
-    signUp.onclick = e => {
-        clearMainContainer()
-        signUpUser()
-    }
-    // append items and render card
-    card.append(header, login, signUp)
-    rendersCard(card)
-}
-
-function signUpUser() {
-    let card = document.createElement('card')
-    let header = document.createElement('h3')
-    header.innerText = "Sign Up Below"
-    let signUpForm = document.createElement('form')
-    let nameLabel = document.createElement('label')
-    nameLabel.innerText = 'Name:'
-    let name = document.createElement('input')
-    name.id = 'login-name'
-    name.setAttribute("type", "text")
-    let usernameLabel = document.createElement('label')
-    usernameLabel.innerText = 'Username:'
-    let usernameInput = document.createElement('input')
-    usernameInput.setAttribute("type", "text")
-    let emailLabel = document.createElement('label')
-    emailLabel.innerText = 'Email:'
-    let email = document.createElement('input')
-    email.setAttribute("type", "text")
-    let bioLabel = document.createElement('label')
-    bioLabel.innerText = 'Tell us about yourself:'
-    let bio = document.createElement('INPUT')
-    bio.setAttribute("type", "text")
-
-
-    // submit and go to spots index view
-    let submit = document.createElement('button')
-    submit.innerText = "Submit"
-    signUpForm.addEventListener('submit', function(e) {
-        e.preventDefault()
-        let userObj = new User(name.value, bio.value, usernameInput.value, email.value)
-        userObj.addNewUser()
-        clearMainContainer()
-        fetchFishingSpots()
-    })
-    // back button and wipe nodes 
-    let back = document.createElement('button')
-    back.innerText = "Back"
-    back.onclick = e => {
-        clearMainContainer()
-        userLogin()
-    }
-    // append and render
-    signUpForm.append(nameLabel, name, usernameLabel, usernameInput, emailLabel, email, bioLabel, bio, submit)
-    card.append(header, signUpForm, back)
-    rendersCard(card)
-}
-
 
 function fetchFishingSpots(id=""){
     fetch(SPOT_URL + id)
@@ -152,14 +59,6 @@ function fetchUsers(id=''){
             USERS = json
             return USERS
         })
-}
-
-function renderUsers(users){
-    users.forEach((user) => {
-        const userObj = new User(user.name, user.username, user.bio, user.favorite_fishing_spots, user.reviews)
-        const card = userObj.renderUser(user.favorite_fishing_spots, user.reviews)
-        rendersCard(card)
-    })
 }
 
 function fetchReviews(id=''){
@@ -202,7 +101,7 @@ function rendersCard(card){
 }
 
 function createColumn(card){
-    column = document.createElement("div")
+    let column = document.createElement("div")
     column.className = "col-lg-4"
     column.appendChild(card)
     CURRENT_ROW.appendChild(column)
@@ -218,4 +117,5 @@ function createRow(){
 function clearMainContainer() {
     while (MAIN_CONTAINER.lastChild)
         MAIN_CONTAINER.removeChild(MAIN_CONTAINER.lastChild)
+    COLUMN_COUNT = 10
 }

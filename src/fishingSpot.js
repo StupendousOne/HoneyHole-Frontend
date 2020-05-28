@@ -119,7 +119,7 @@ class FishingSpot {
             .then(res => console.log(res))
     }
 
-    editModal(spotObj) {
+    addEditModal(spotObj) {
         const body = document.querySelector("#infoModalBody")
         const header = document.querySelector("#infoModalTitle")
         const close = document.querySelector("#infoModalClose")
@@ -307,7 +307,6 @@ class FishingSpot {
     }
 
 }
-// what if instead of writing each input and condensed it to look at an object. second argument can tell function if new or edit. If new, create new fishObj w/ empty fields which can be passed. If edit, it would use the passed in object.
 function addSpotFetch(params) {
     fetch(SPOT_URL, {
         method: "POST",
