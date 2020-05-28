@@ -14,7 +14,7 @@ class FishingSpot {
         this.fish = fish    // fish = array of fish this spot has
         this.created_at = created_at
         this.updated_at = updated_at
-        this.element = document.createElement('card')
+        this.element = document.createElement('div')
     }
 
     renderSpot() {
@@ -22,8 +22,18 @@ class FishingSpot {
         if(this.is_active){
             // Site image, name, and link to info page
             this.element.className = 'card'
+            this.element.classList.add("h-100")
             const image = document.createElement('img')
             image.src = this.image_small
+            image.classList.add("card-img-top")
+            image.classList.add("m-30")
+
+            const cardBody = document.createElement("div")
+            cardBody.className = "card-body"
+            cardBody.classList.add("card-body")
+            cardBody.classList.add("d-flex")
+            cardBody.classList.add("flex-column")
+
             const linkToSiteInfo = document.createElement('a')
             linkToSiteInfo.href = this.site_info
             const name = document.createElement('h3')
@@ -54,18 +64,25 @@ class FishingSpot {
                 fishUl.appendChild(fishLi)
             })
 
+            const btnDiv = document.createElement("div")
+            btnDiv.className = "mt-auto"
             // edit fishing spot
             // QUESTION: how to launch/display a modal from here to edit??
             // 
             const editBtn = document.createElement('button')
+            editBtn.classList.add('btn')
+            editBtn.classList.add('btn-primary')
+            editBtn.dataset.toggle="modal"
+            editBtn.dataset.target=`#infoModal`
             editBtn.innerText = "Edit"
-            editBtn.addEventListener('click', (e) => {
-                console.log(e.target)
-                // this.getSpotDataFromUser(this.id)
-            })
+            editBtn.addEventListener('click', () => this.editModal())
             
+            const br4 = document.createElement('br')
+
             // remove fishing spot (toggle is_active status)
             const delBtn = document.createElement('button')
+            delBtn.classList.add('btn')
+            delBtn.classList.add('btn-danger')
             delBtn.innerText = "Delete"
             delBtn.addEventListener('click', () => {
                 this.deleteFishingSpot()
@@ -75,7 +92,9 @@ class FishingSpot {
             // append everything here
             fishList.appendChild(fishUl)
             linkToSiteInfo.appendChild(name)
-            this.element.append(image, linkToSiteInfo, linkToLocation, br1, accessSpan, br2, fishList, br3, delBtn, editBtn)
+            btnDiv.append(editBtn,br4,delBtn)
+            cardBody.append(linkToSiteInfo, linkToLocation, br1, accessSpan, br2, fishList, br3, btnDiv)
+            this.element.append(image, cardBody)
 
             return this.element
         }
@@ -97,6 +116,72 @@ class FishingSpot {
         fetch(SPOT_URL + this.id, {method: "DELETE"})
         .then(res => res.json())
         .then(res => console.log(res))
+    }
+
+    editModal(){
+        const body = document.querySelector("#infoModalBody")
+        const header = document.querySelector("#infoModalTitle")
+        const close = document.querySelector("#infoModalClose")
+
+        header.innerText = `Edit: ${this.name}`
+
+        //hide close button
+        close.setAttribute("style", "display:none")
+
+        //clear any old info
+        while(body.lastChild){
+             body.removeChild(body.lastChild)
+        }
+
+        body.addEventListener("submit",(e)=>{
+            e.preventDefault()
+            console.log("submitted")
+        })
+
+        //build edit form here and append to body
+        const form = document.createElement('form')
+        //form-groups style each input and should typically have a label and an input
+        const formGroup1 = document.createElement('div')
+        formGroup1.className = "form-group"
+
+        //make label and field
+        const nameLabel = document.createElement("label")
+        nameLabel.htmlFor = "nameField"
+        nameLabel.innerText = "Name: "
+
+        const nameField = document.createElement("input")
+        nameField.type="text"
+        nameField.className = "form-control"
+        nameField.id = "nameField"
+
+        //append label and field to form group
+        formGroup1.append(nameLabel, nameField)
+        
+
+        //create and append submit button
+        const submitBtn = document.createElement("input")
+        submitBtn.type="submit"
+        submitBtn.classList.add("btn")
+        submitBtn.classList.add("btn-primary")
+        submitBtn.innerText = "Submit"
+
+        //append everything to form and form to body
+        form.append(formGroup1,submitBtn)
+        body.appendChild(form)
+
+        // add event listner that displays some result 
+        //and allows closing of modal by unhiding close button
+        body.addEventListener("submit",(e)=>{
+            e.preventDefault()
+            while(body.lastChild){
+                body.removeChild(body.lastChild)
+            }
+            const name = document.createElement("span")
+            name.innerText = `name: ${e.target.nameField.value}`
+            body.appendChild(name)
+            console.log("submitted")
+            close.setAttribute("style", "display:block")
+        })
     }
     
 }
