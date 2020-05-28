@@ -23,7 +23,9 @@ class Fish {
             fishImg.className = "card-img-top"
 
             const cardBody = document.createElement("div")
-            cardBody.className = "card-body"
+            cardBody.classList.add("card-body")
+            cardBody.classList.add("d-flex")
+            cardBody.classList.add("flex-column")
 
             const speciesTitle = document.createElement('h5')
             speciesTitle.innerText = this.species
@@ -35,6 +37,7 @@ class Fish {
             // Lorem ipsum dolor text....
             // </div>
             const btnDiv = document.createElement("div")
+            btnDiv.className = "mt-auto"
             const descBtn = document.createElement("button")
             descBtn.classList.add('btn')
             descBtn.classList.add('btn-primary')
@@ -43,19 +46,11 @@ class Fish {
             descBtn.innerText = "Description"
             descBtn.addEventListener("click",()=>this.fillOutModal())
             btnDiv.appendChild(descBtn)
-            
-            const descDiv = document.createElement('div')
-            descDiv.className = "collapse"
-            descDiv.id = `fish${this.id}`
-
-            const descP = document.createElement("p")
-            descP.innerText = this.description
 
             const spotsUl = document.createElement('ul')
             spotsUl.innerText = "Locations:"
             
-            descDiv.append(descP, spotsUl)
-            cardBody.append(speciesTitle, btnDiv, descDiv)
+            cardBody.append(speciesTitle, btnDiv)
             this.element.append(fishImg, cardBody)
             this.fishingSpots.forEach(fishingSpot => this.listFishingSpot(fishingSpot, spotsUl))
 
