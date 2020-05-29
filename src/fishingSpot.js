@@ -325,6 +325,13 @@ class FishingSpot {
         //append label and field to form group
         formGroup1.append(fishLabel, fishUl)
 
+        // back button
+        const backBtn = document.createElement('button')
+        backBtn.classList.add('btn')
+        backBtn.classList.add('btn-secondary')
+        backBtn.setAttribute("data-dismiss", "modal") // dismisses modal when user clicks
+        backBtn.innerText = "Back"
+
         //create and append submit button
         const submitBtn = document.createElement("input")
         submitBtn.type = "submit"
@@ -333,7 +340,7 @@ class FishingSpot {
         submitBtn.innerText = "Submit"
 
         //append everything to form and form to body
-        form.append(formGroup1, submitBtn)
+        form.append(formGroup1, backBtn, submitBtn)
         body.appendChild(form)
 
         // add event listener that displays some result 
