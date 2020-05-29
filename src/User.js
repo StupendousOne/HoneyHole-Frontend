@@ -98,7 +98,7 @@ class User {
         const header = document.querySelector("#infoModalTitle")
         const close = document.querySelector("#infoModalClose")
     
-        header.innerText = `Edit profile: ${this.name}`
+        header.innerText = `Edit profile below and submit`
     
         //hide close button
         close.setAttribute("style", "display:none")
@@ -177,7 +177,9 @@ class User {
         const delBtn = document.createElement("input")
         delBtn.type = "delete"
         delBtn.classList.add("btn")
-        delBtn.classList.add("btn-danger")
+        delBtn.classList.add("btn-secondary")
+        delBtn.classList.add("close")
+        delBtn.setAttribute("data-dismiss", "modal") // dismisses modal when user deletes self
         delBtn.innerText = "Delete"
         delBtn.addEventListener("click", (e) => {
             e.preventDefault()
@@ -384,11 +386,3 @@ function expandUser(spots, reviews, div) {
         return div
     }
 }
-
-// function renderusers(users){
-//     users.foreach((user) => {
-//         const userobj = new user(user.name, user.username, user.bio, user.favorite_fishing_spots, user.reviews)
-//         const card = userobj.renderuser(user.favorite_fishing_spots, user.reviews)
-//         renderscard(card)
-//     })
-// }
