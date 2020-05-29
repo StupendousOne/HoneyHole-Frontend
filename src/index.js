@@ -18,7 +18,7 @@ let CURRENT_ROW
 init()
 
 function init () {
-    fetchUsers().then(userLogin)
+    fetchUsers().then(userLogin())
 }
 
 function fetchFishingSpots(id=""){
@@ -55,6 +55,7 @@ function renderFish(fish){
 function fetchUsers(id=''){
     return fetch(USER_URL + id)
         .then(res => res.json())
+        // .then(users => renderUsers(users))
         .then(json => {
             USERS = json
             return USERS
