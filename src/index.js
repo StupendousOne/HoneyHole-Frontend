@@ -21,8 +21,6 @@ init()
 
 function init () {
     fetchUsers().then(userLogin())
-    // fetchFishingSpots()
-    // fetchReviews()
 }
 
 function rendersCard(card){
