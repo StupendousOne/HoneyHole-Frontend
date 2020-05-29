@@ -1,6 +1,10 @@
 body {
     margin: 0;
     padding: 0;
+    background-image: url(https://www.fccnn.com/incoming/6480108-sbr4nm-bass-fishing-sunrise2.jpg/alternates/BASE_LANDSCAPE/bass%20fishing%20sunrise2.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
   }
   
   header {
