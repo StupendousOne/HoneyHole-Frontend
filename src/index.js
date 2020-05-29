@@ -8,6 +8,7 @@ const FISH_URL = BASE_URL + "fish/"
 let USERS = []
 let FISH = []
 let CURRENT_USER
+let FISHING_SPOTS = []
 const MAIN_CONTAINER = document.querySelector('main')
 
 // counter to how many columns have been made in the current row(max 3 for our purposes)
@@ -18,14 +19,18 @@ let CURRENT_ROW
 init()
 
 function init () {
-    fetchUsers().then(userLogin())
-    // fetchFishingSpots()
+    //fetchUsers().then(userLogin())
+    fetchFishingSpots().then(spots => fetchFish()).then(fish => renderFish(fish))
+    
 }
 
 function fetchFishingSpots(id=""){
-    fetch(SPOT_URL + id)
+    return fetch(SPOT_URL + id)
         .then(res => res.json())
-        .then(spots => renderFishingSpots(spots))
+        .then(spots => {
+            FISHING_SPOTS = spots
+            return FISHING_SPOTS
+        })
 }
 
 function fetchFish(id=''){
