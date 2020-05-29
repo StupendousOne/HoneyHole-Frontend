@@ -66,6 +66,7 @@ class FishingSpot {
                 fishUl.appendChild(fishLi)
             })
 
+
             const btnDiv = document.createElement("div")
             btnDiv.className = "mt-auto"
             // edit fishing spot
@@ -80,6 +81,20 @@ class FishingSpot {
 
             const br4 = document.createElement('br')
 
+            // favorite fishing spot
+            const favBtn = document.createElement('button')
+            favBtn.classList.add('btn')
+            favBtn.classList.add('btn-primary')
+            favBtn.dataset.toggle = "modal"
+            favBtn.dataset.target = `#infoModal`
+
+            // handle CURRENT_USER array of favorite_fishing_spots to see if this is one of them and toggle innerText accordingly
+            const spotIds = CURRENT_USER.favorite_fishing_spots.map(spot => spot.id)
+            if (spotIds.includes(this.id)) {favBtn.innerText = "Unfavorite"}
+            else {favBtn.innerText = "Favorite"}
+
+            favBtn.addEventListener('click', () => this.favorite())
+
             // remove fishing spot (toggle is_active status)
             const delBtn = document.createElement('button')
             delBtn.classList.add('btn')
@@ -93,7 +108,7 @@ class FishingSpot {
             // append everything here
             fishList.appendChild(fishUl)
             linkToSiteInfo.appendChild(name)
-            btnDiv.append(editBtn, br4, delBtn)
+            btnDiv.append(favBtn, editBtn, br4, delBtn)
             cardBody.append(linkToSiteInfo, linkToLocation, br1, accessSpan, br2, fishList, br3, btnDiv)
             this.element.append(image, cardBody)
 
@@ -120,6 +135,36 @@ class FishingSpot {
             .then(res => console.log(res))
     }
 
+    unFavorite() {
+        fetch(SPOT_URL, { 
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user_id: CURRENT_USER.id,
+                fishing_spot_id: this.id
+            })
+        })
+        .then(res => res.json())
+        .then(res => console.log(res))
+    }
+
+    favorite() {
+        fetch(SPOT_URL, { 
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user_id: CURRENT_USER.id,
+                fishing_spot_id: this.id
+            })
+        })
+        .then(res => res.json())
+        .then(res => console.log(res))
+    }
+
     addEditModal(spotObj) {
         const body = document.querySelector("#infoModalBody")
         const header = document.querySelector("#infoModalTitle")
@@ -131,7 +176,6 @@ class FishingSpot {
             isNew = true
             spotObj = new FishingSpot()
         }
-
         header.innerText = `Edit: ${this.name}`
 
         //hide close button
