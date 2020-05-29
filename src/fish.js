@@ -44,7 +44,7 @@ class Fish {
             descBtn.dataset.toggle="modal"
             descBtn.dataset.target=`#infoModal`
             descBtn.innerText = "Description"
-            descBtn.addEventListener("click",()=>this.fillOutModal())
+            descBtn.addEventListener("click",()=>this.fillOutShowModal())
             btnDiv.appendChild(descBtn)
 
             const spotsUl = document.createElement('ul')
@@ -58,13 +58,13 @@ class Fish {
         }
     }
 
-    fillOutModal(){
+    fillOutShowModal(){
         const body = document.querySelector("#infoModalBody")
         const header = document.querySelector("#infoModalTitle")
-        const submit = document.querySelector("#infoModalSubmit")
+        const close = document.querySelector("#infoModalClose")
 
-        //hide submit button
-        submit.setAttribute("style", "display:none")
+        //show close button in case it is hidden submit button
+        close.setAttribute("style", "display:block")
 
         //clear any old info
         while(body.lastChild){
@@ -82,9 +82,28 @@ class Fish {
 
         const spotsUl = document.createElement('p')
         spotsUl.innerText = "Locations:"
+
+        const editBtn = document.createElement('button')
+        descBtn.classList.add('btn')
+        descBtn.classList.add('btn-warning')
+        descBtn.addEventListener("click",()=>this.fillOutEditModal())
         
         this.fishingSpots.forEach(fishingSpot => this.listFishingSpot(fishingSpot, spotsUl))
-        body.append(fishImg, fishDesc, spotsUl)
+        body.append(fishImg, fishDesc, spotsUl, editBtn)
+    }
+
+    fillOutEditModal(){
+        const body = document.querySelector("#infoModalBody")
+        const header = document.querySelector("#infoModalTitle")
+        const close = document.querySelector("#infoModalClose")
+
+        //show close button in case it is hidden submit button
+        close.setAttribute("style", "display:block")
+
+        //clear any old info
+        while(body.lastChild){
+            body.removeChild(body.lastChild)
+        }
     }
     
     listFishingSpot(fishingSpot, p){

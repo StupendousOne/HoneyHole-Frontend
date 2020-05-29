@@ -1,6 +1,6 @@
 class FishingSpot {
     
-    constructor (id, name='', longitude='', latitude='', image='', image_small='', public_access='', user_id='', site_info='', is_active, fish=[], created_at, updated_at) {
+    constructor (id, name, longitude, latitude, image, image_small, public_access, user_id, site_info, is_active, fish, created_at, updated_at) {
         this.id = id
         this.name = name
         this.latitude  = latitude
@@ -26,7 +26,7 @@ class FishingSpot {
             const image = document.createElement('img')
             image.src = this.image_small
             image.classList.add("card-img-top")
-            image.classList.add("m-30")
+            image.classList.add("mh-30")
 
             const cardBody = document.createElement("div")
             cardBody.className = "card-body"
@@ -75,9 +75,8 @@ class FishingSpot {
             editBtn.dataset.toggle="modal"
             editBtn.dataset.target=`#infoModal`
             editBtn.innerText = "Edit"
-
             editBtn.addEventListener('click', () => this.editModal())
- 
+            
             const br4 = document.createElement('br')
 
             // remove fishing spot (toggle is_active status)
@@ -101,7 +100,7 @@ class FishingSpot {
         }
     }
 
-    modifyFishingSpot(spotObj){
+    modifyFishingSpot(id, params){
         fetch(SPOT_URL + id, {
             method: "PATCH",
             headers: {
@@ -111,7 +110,6 @@ class FishingSpot {
         })
         .then(res => res.json())
         .then(res => console.log(res))
-        .then(res => fetchFishingSpots())
     }
   
     deleteFishingSpot() {
@@ -187,28 +185,26 @@ class FishingSpot {
     }
     
 }
-// what if instead of writing each input and condensed it to look at an object. second argument can tell function if new or edit. If new, create new fishObj w/ empty fields which can be passed. If edit, it would use the passed in object.
-function addSpot(params){
+
+function addNewFishingSpot(spot){
     fetch(SPOT_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            name:   params.name, 
-            latitude:   params.latitude, 
-            longitude: params.longitude, 
-            image: params.image, 
-            public_access: params.public_access, 
-            user_id: params.user_id, 
-            site_info: params.site_info, 
-            is_active: true,
-            fish: params.fish, 
+            name: spot.name,
+            public_access: spot.public_access,
+            latitude: spot.latitude,
+            longitude: spot.longitude,
+            site_info: spot.site_info,
+            user_id: spot.user_id,
+            is_active: spot.s_active,
+            image: spot.image
         })
     })
     .then(res => res.json())
     .then(res => console.log(res))
-    .then(res => fetchFishingSpots())
 }
 
 
