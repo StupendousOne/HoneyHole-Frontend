@@ -10,7 +10,6 @@ class Fish {
         this.element = document.createElement('div')
     }
 
-
     renderFish() {
         // create card and put user title, username, and review content on it
         if(this.is_active){
@@ -112,6 +111,23 @@ class Fish {
         p.appendChild(spotLi)
     }
 
+}
+
+function fetchFish(id=''){
+    return fetch(FISH_URL + id)
+        .then(res => res.json())
+        .then(json => {
+            FISH = json
+            return FISH
+        })
+}
+
+function renderFish(fish){
+    fish.forEach((fish) => {
+        const newFish = new Fish(fish.id, fish.species, fish.description, fish.is_active, fish.image, fish.fishing_spots)
+        const card = newFish.renderFish()
+        rendersCard(card)
+    })
 }
 
 function addNewFish(fish){

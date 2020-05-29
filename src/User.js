@@ -242,6 +242,15 @@ class User {
     }
 }
 
+function fetchUsers(id=''){
+    return fetch(USER_URL + id)
+        .then(res => res.json())
+        .then(json => {
+            USERS = json
+            return USERS
+        })
+}
+
 function editUserFetch(id, params){
     fetch(USER_URL + id, {
         method: "PATCH",
