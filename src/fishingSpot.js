@@ -93,7 +93,10 @@ class FishingSpot {
             if (spotIds.includes(this.id)) {favBtn.innerText = "Unfavorite"}
             else {favBtn.innerText = "Favorite"}
 
-            favBtn.addEventListener('click', () => this.favorite())
+            favBtn.addEventListener('click', () => {
+                if (spotIds.includes(this.id)) {this.unFavorite()}
+                else {this.favorite().then(fetchFishingSpots())}
+            })
 
             // remove fishing spot (toggle is_active status)
             const delBtn = document.createElement('button')
@@ -135,6 +138,7 @@ class FishingSpot {
             .then(res => console.log(res))
     }
 
+    // how do I get a 
     unFavorite() {
         fetch(SPOT_URL, { 
             method: "DELETE",
@@ -151,7 +155,7 @@ class FishingSpot {
     }
 
     favorite() {
-        fetch(SPOT_URL, { 
+        return fetch(SPOT_URL, { 
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -161,7 +165,7 @@ class FishingSpot {
                 fishing_spot_id: this.id
             })
         })
-        .then(res => res.json())
+        .then(res => res.json()) 
         .then(res => console.log(res))
     }
 
