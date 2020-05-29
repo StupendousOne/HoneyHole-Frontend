@@ -61,9 +61,19 @@ class FishingSpot {
             const br3 = document.createElement('br')
 
             this.fish.forEach((fish) => {
-                const fishLi = document.createElement('li')
-                fishLi.innerText = fish.species
-                fishUl.appendChild(fishLi)
+                const fishA = document.createElement('a')
+                fishA.innerText = fish.species
+                fishA.href = '#'
+                fishA.dataset.toggle = "modal"
+                fishA.dataset.target = `#infoModal`
+                // make a full fishObj out of this fish so that we can call Fish class method on it and view it in modal with edit functionality
+                let fullFishObj = FISH.find(f => f.id == fish.id)
+                const fishObj = new Fish(fish.id, fish.species, fish.description, fish.is_active, fish.image, fullFishObj.fishing_spots)
+
+                fishA.addEventListener('click', () => fishObj.fillOutShowModal())
+
+                const fishBr = document.createElement('br')
+                fishUl.append(fishA, fishBr)
             })
 
 
