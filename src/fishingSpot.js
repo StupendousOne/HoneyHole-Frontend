@@ -1,6 +1,7 @@
 class FishingSpot {
 
-    constructor(id, name = '', longitude = '', latitude = '', image = '', image_small = '', public_access = '', user_id = '', site_info = '', is_active, fish = [], fish_spot = [], created_at, updated_at) {
+    constructor(id = '', name = '', longitude = '', latitude = '', image = '', image_small = '', public_access = '', user_id = '', site_info = '', is_active, fish = [], fish_spot = [], created_at, updated_at) {
+
         this.id = id
         this.name = name
         this.latitude = latitude
@@ -75,7 +76,7 @@ class FishingSpot {
             editBtn.dataset.target = `#infoModal`
             editBtn.innerText = "Edit"
 
-            editBtn.addEventListener('click', () => this.editModal(this))
+            editBtn.addEventListener('click', () => this.addEditModal(this))
 
             const br4 = document.createElement('br')
 
@@ -119,15 +120,16 @@ class FishingSpot {
             .then(res => console.log(res))
     }
 
-    editModal(spotObj) {
+    addEditModal(spotObj) {
         const body = document.querySelector("#infoModalBody")
         const header = document.querySelector("#infoModalTitle")
         const close = document.querySelector("#infoModalClose")
+        let isNew = false
 
         // this can be delegated to the button to create new and refactored. This generates a new object if one is not passed in to edit
         if (!spotObj.id) {
+            isNew = true
             spotObj = new FishingSpot()
-            spotObj.new = true
         }
 
         header.innerText = `Edit: ${this.name}`
@@ -276,12 +278,11 @@ class FishingSpot {
         submitBtn.classList.add("btn-primary")
         submitBtn.innerText = "Submit"
 
-
         //append everything to form and form to body
         form.append(formGroup1, submitBtn)
         body.appendChild(form)
 
-        // add event listner that displays some result 
+        // add event listener that displays some result 
         //and allows closing of modal by unhiding close button
         body.addEventListener("submit", (e) => {
             e.preventDefault()
@@ -302,12 +303,35 @@ class FishingSpot {
                 return spotObj.fish_spot.find((fish_spot) => fish_spot.fish_id == id)
             })
             deleteIds.forEach((fish_spot) => deleteSpotFishFetch(fish_spot))
-            addSpotFetch(spotObj)
+            if (isNew){
+                addSpotFetch(spotObj)
+            } else {
+                editSpotFetch(spotObj)
+            }
         })
     }
 
 }
-// what if instead of writing each input and condensed it to look at an object. second argument can tell function if new or edit. If new, create new fishObj w/ empty fields which can be passed. If edit, it would use the passed in object.
+
+function editSpotFetch(params) {
+    fetch(SPOT_URL + params.id, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: params.name,
+            latitude: params.latitude,
+            longitude: params.longitude,
+            image: params.image,
+            public_access: params.public_access,
+            user_id: params.user_id,
+            site_info: params.site_info
+        })
+    })
+    
+}
+
 function addSpotFetch(params) {
     fetch(SPOT_URL, {
         method: "POST",
@@ -323,7 +347,6 @@ function addSpotFetch(params) {
             user_id: params.user_id,
             site_info: params.site_info,
             is_active: true,
-            fish: params.fish,
         })
     })
         .then(res => res.json())
