@@ -177,8 +177,7 @@ class User {
         const delBtn = document.createElement("input")
         delBtn.type = "delete"
         delBtn.classList.add("btn")
-        delBtn.classList.add("btn-secondary")
-        delBtn.classList.add("close")
+        delBtn.classList.add("btn-danger")
         delBtn.setAttribute("data-dismiss", "modal") // dismisses modal when user deletes self
         delBtn.innerText = "Delete"
         delBtn.addEventListener("click", (e) => {

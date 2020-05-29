@@ -19,9 +19,9 @@ let CURRENT_ROW
 init()
 
 function init () {
-    //fetchUsers().then(userLogin())
-    fetchFishingSpots().then(spots => fetchFish()).then(fish => renderFish(fish))
-    
+    fetchUsers().then(userLogin())
+    // fetchFishingSpots()
+    // fetchReviews()
 }
 
 function rendersCard(card){
