@@ -80,10 +80,7 @@ class Fish {
         const spotBr = document.createElement('br')
 
         const spotsP = document.createElement('p')
-        this.fishingSpots.forEach(( fishingSpot ) => {
-            let spot = this.listFishingSpot(fishingSpot, spotsP)
-            spot.addEventListener("click",()=>this.fillOutEditModal())
-        })
+        this.fishingSpots.forEach(( fishingSpot ) => this.listFishingSpot(fishingSpot, spotsP))
         const editBtn = document.createElement('button')
         editBtn.innerText = "Edit"
         editBtn.classList.add('btn')
@@ -270,6 +267,12 @@ class Fish {
         const spotA = document.createElement('a')
         spotA.innerText = fishingSpot.name
         spotA.href = '#'
+        spotA.addEventListener('click', (e) => {
+            e.preventDefault()
+            let full = FISHING_SPOTS.find(fs => fs.id == fishingSpot.id)
+            const spotObj = new FishingSpot(full.id, full.name, full.longitude, full.latitude, full.image, full.image_small, full.public_access, full.user_id, full.site_info, full.is_active, full.fish, full.fish_spot, full.created_at, full.updated_at)
+            spotObj.fillOutShowModal()
+        })
         const spotBr = document.createElement('br')
         p.append(spotA, spotBr)
         return p
@@ -327,7 +330,6 @@ function renderFish(fish){
 }
 
 function addNewFish(e){
-    debugger
     e.preventDefault()
     const formSpecies = e.target.querySelector("#speciesField").value
     const formDesc = e.target.querySelector("#descField").value
