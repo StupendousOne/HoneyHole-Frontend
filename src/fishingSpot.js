@@ -187,6 +187,70 @@ class FishingSpot {
         })
     }
 
+    fillOutShowModal(){
+        const body = document.querySelector("#infoModalBody")
+        const header = document.querySelector("#infoModalTitle")
+        const close = document.querySelector("#infoModalClose")
+
+        //show close button in case it is hidden submit button
+        close.setAttribute("style", "display:block")
+
+        //clear any old info
+        while(body.lastChild){
+            body.removeChild(body.lastChild)
+        }
+
+        header.innerHTML = this.name
+
+        const spotImg = document.createElement('img')
+        spotImg.src = this.image_small
+        spotImg.className = "img-fluid"
+        const imgBr = document.createElement('br')
+
+        const latSpan = document.createElement('span')
+        latSpan.innerText = "Latitude:"
+        const latP = document.createElement('p')
+        latP.innerText = this.latitude
+        const longSpan = document.createElement('span')
+        longSpan.innerText = "Longitude:"
+        const longP = document.createElement('p')
+        longP.innerText =`Longitude: ${this.longitude}`
+        const accessSpan = document.createElement('span')
+        accessSpan.innerText = "Describe site access:"
+        const accessP = document.createElement('p')
+        accessP.innerText = this.public_access
+        const siteSpan = document.createElement('span')
+        siteSpan.innerText = "Link to site info:"
+        const siteBr = document.createElement('br')
+        const siteA = document.createElement('a')
+        siteA.innerText = this.site_info
+        siteA.href = this.site_info
+        const descBr = document.createElement('br')
+
+        const fishSpan = document.createElement('span')
+        fishSpan.innerText = "Fish species:"
+        const fishP = document.createElement('p')
+        this.fish.forEach((fish) => {
+            if(fish.is_active){
+                const fishA = document.createElement('a')
+                fishA.innerText = fish.species
+                fishA.href = '#'
+                fishA.dataset.toggle = "modal"
+                fishA.dataset.target = `#infoModal`
+                // make a full fishObj out of this fish so that we can call Fish class method on it and view it in modal with edit functionality
+                let fullFishObj = FISH.find(f => f.id == fish.id)
+                const fishObj = new Fish(fullFishObj)
+
+                fishA.addEventListener('click', () => fishObj.fillOutShowModal())
+
+                const fishBr = document.createElement('br')
+                fishP.append(fishA, fishBr)
+            }
+        })
+        
+        body.append(spotImg, imgBr, latSpan, latP, longSpan, longP, accessSpan, accessP, siteSpan, siteBr, siteA, descBr, fishSpan, fishP)
+    }
+
     addEditModal(spotObj) {
         const body = document.querySelector("#infoModalBody")
         const header = document.querySelector("#infoModalTitle")
@@ -384,6 +448,14 @@ class FishingSpot {
         })
     }
 
+    listFish(fish, p){
+        const fishA = document.createElement('a')
+        fishA.innerText = fish.species
+        fishA.href = '#'
+        const fishBr = document.createElement('br')
+        p.append(fishA, fishBr)
+        return p
+    }
 }
 
 function editSpotFetch(params) {
