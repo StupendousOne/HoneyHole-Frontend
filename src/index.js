@@ -19,6 +19,7 @@ init()
 
 function init () {
     fetchUsers().then(userLogin())
+    // fetchFishingSpots()
 }
 
 function fetchFishingSpots(id=""){
