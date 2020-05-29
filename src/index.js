@@ -8,6 +8,7 @@ const FISH_URL = BASE_URL + "fish/"
 let USERS = []
 let FISH = []
 let CURRENT_USER
+let FISHING_SPOTS = []
 const MAIN_CONTAINER = document.querySelector('main')
 
 // counter to how many columns have been made in the current row(max 3 for our purposes)
