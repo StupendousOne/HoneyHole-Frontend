@@ -376,6 +376,20 @@ function editSpotFetch(params) {
     
 }
 
+function fetchFishingSpots(id=""){
+    fetch(SPOT_URL + id)
+        .then(res => res.json())
+        .then(spots => renderFishingSpots(spots))
+}
+
+function renderFishingSpots(spots){
+    spots.forEach(spot => {
+        const spotObj = new FishingSpot(spot.id, spot.name, spot.longitude, spot.latitude, spot.image, spot.image_small, spot.public_access, spot.user_id, spot.site_info, spot.is_active, spot.fish, spot.fish_spots, spot.created_at, spot.updated_at)
+        const card = spotObj.renderSpot()
+        rendersCard(card)
+    })
+}
+
 function addSpotFetch(params) {
     fetch(SPOT_URL, {
         method: "POST",
