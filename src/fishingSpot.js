@@ -68,7 +68,7 @@ class FishingSpot {
                 fishA.dataset.target = `#infoModal`
                 // make a full fishObj out of this fish so that we can call Fish class method on it and view it in modal with edit functionality
                 let fullFishObj = FISH.find(f => f.id == fish.id)
-                const fishObj = new Fish(fish.id, fish.species, fish.description, fish.is_active, fish.image, fullFishObj.fishing_spots)
+                const fishObj = new Fish(fullFishObj)
 
                 fishA.addEventListener('click', () => fishObj.fillOutShowModal())
 

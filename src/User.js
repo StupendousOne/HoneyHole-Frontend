@@ -300,13 +300,8 @@ function userLogin() {
                         e.preventDefault(); // don't follow link
                         CURRENT_USER = new User(user.id, user.name, user.bio, user.username, user.email, user.is_active, user.reviews, user.favorite_fishing_spots, user.favorites)
                         clearMainContainer()
-<<<<<<< HEAD
-                        fetchFishingSpots().then(fetchFish())
                         activateLinks()
-                        CURRENT_USER.renderUser()
-=======
                         fetchFishingSpots().then(res => fetchFish()).then(res => renderFishingSpots(FISHING_SPOTS))
->>>>>>> 4cf76d8d4eb2b4621d932cb648d7d8b231428ee3
                     }
                     userLi.appendChild(a)
                     usersUl.appendChild(userLi)
