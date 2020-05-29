@@ -75,9 +75,15 @@ class Fish {
         const fishDesc = document.createElement('p')
         fishDesc.innerText = this.description
 
-        const spotsUl = document.createElement('p')
-        spotsUl.innerText = "Locations:"
+        const spotSpan = document.createElement('span')
+        spotSpan.innerText = "Locations:"
+        const spotBr = document.createElement('br')
 
+        const spotsP = document.createElement('p')
+        this.fishingSpots.forEach(( fishingSpot ) => {
+            let spot = this.listFishingSpot(fishingSpot, spotsP)
+            spot.addEventListener("click",()=>this.fillOutEditModal())
+        })
         const editBtn = document.createElement('button')
         editBtn.innerText = "Edit"
         editBtn.classList.add('btn')
@@ -99,8 +105,7 @@ class Fish {
             renderFish(FISH)
         })
         
-        this.fishingSpots.forEach(fishingSpot => this.listFishingSpot(fishingSpot, spotsUl))
-        body.append(fishImg, fishDesc, spotsUl, editBtn, deleteBtn)
+        body.append(fishImg, fishDesc, spotSpan, spotBr, spotsP, editBtn, deleteBtn)
     }
 
     fillOutEditModal(){
@@ -234,9 +239,12 @@ class Fish {
     }
     
     listFishingSpot(fishingSpot, p){
-        const spotLi = document.createElement('li')
-        spotLi.innerText = fishingSpot.name
-        p.appendChild(spotLi)
+        const spotA = document.createElement('a')
+        spotA.innerText = fishingSpot.name
+        spotA.href = '#'
+        const spotBr = document.createElement('br')
+        p.append(spotA, spotBr)
+        return p
     }
 
     deleteFish(){
