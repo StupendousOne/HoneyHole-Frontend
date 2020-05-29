@@ -96,7 +96,19 @@ class Fish {
             })
             this.deleteFish()
             clearMainContainer()
-            renderFish(FISH)
+            if(CURRENT_PAGE == "fish"){
+                renderFish(FISH)
+            } else if (CURRENT_PAGE == "spots") {
+                FISHING_SPOTS.forEach(spot => {
+                    spot.fish.forEach(fish => {
+                        if (this.id == fish.id){
+                            fish.is_active = false
+                        }
+                    })
+                })
+                renderFishingSpots(FISHING_SPOTS)
+            }
+            
         })
         
         this.fishingSpots.forEach(fishingSpot => this.listFishingSpot(fishingSpot, spotsUl))

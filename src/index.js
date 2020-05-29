@@ -10,6 +10,7 @@ let USERS = []
 let FISH = []
 let CURRENT_USER
 let FISHING_SPOTS = []
+let CURRENT_PAGE = "spots"
 const MAIN_CONTAINER = document.querySelector('main')
 USER_LINK = document.querySelector(".user-link")
 SPOT_LINK = document.querySelector(".spots-link")
@@ -49,18 +50,21 @@ function changeToUserView(e){
     e.preventDefault()
     clearMainContainer()
     CURRENT_USER.renderUser()
+    CURRENT_PAGE = "user"
 }
 
 function changeToFishView(e){
     e.preventDefault()
     clearMainContainer()
     fetchFish().then(res => renderFish(FISH))
+    CURRENT_PAGE = "fish"
 }
 
 function changeToSpotView(e){
     e.preventDefault()
     clearMainContainer()
     fetchFishingSpots().then(renderFishingSpots(FISHING_SPOTS))
+    CURRENT_PAGE = "spots"
 }
 
 function changeToAddFish(e){
