@@ -11,6 +11,7 @@ let FISH = []
 let CURRENT_USER
 let FISHING_SPOTS = []
 let CURRENT_PAGE = "spots"
+let REVIEWS = []
 const MAIN_CONTAINER = document.querySelector('main')
 USER_LINK = document.querySelector(".user-link")
 SPOT_LINK = document.querySelector(".spots-link")

@@ -1,16 +1,16 @@
 class User {
     
-    constructor(id, name, bio, username, email, is_active, reviews, favorite_fishing_spots, favorites) {
+    constructor(user) {
 
-        this.id = id
-        this.name = name
-        this.bio = bio
-        this.username = username
-        this.email = email
-        this.is_active = is_active
-        this.reviews = reviews
-        this.favorite_fishing_spots = favorite_fishing_spots
-        this.favorites = favorites
+        this.id = user.id
+        this.name = user.name
+        this.bio = user.bio
+        this.username = user.username
+        this.email = user.email
+        this.is_active = user.is_active
+        this.reviews = user.reviews
+        this.favorite_fishing_spots = user.favorite_fishing_spots
+        this.favorites = user.favorites
         this.element = document.createElement('card')
     }
     renderUser() {
@@ -49,7 +49,19 @@ class User {
         if (this.reviews != undefined && this.reviews.length != 0) {
             this.reviews.forEach((review) => {
                 let reviewLi = document.createElement('li')
-                reviewLi.innerText = review.title
+                let reviewA = document.createElement('a')
+
+                reviewA.href ="#"
+                reviewA.innerText = review.title
+                reviewA.dataset.toggle = "modal"
+                reviewA.dataset.target = "#infoModal"
+                reviewA.addEventListener("click", () => {
+                    let currentReview = REVIEWS.find(rev => review.id == rev.id)
+                    let reviewWithFunctions = new Review(currentReview) 
+                    reviewWithFunctions.fillOutShowModal()
+                })
+
+                reviewLi.appendChild(reviewA)
                 reviewDiv.appendChild(reviewLi)
             })
         }
@@ -298,10 +310,13 @@ function userLogin() {
                     a.href = '#' // makes it looks linky
                     a.onclick = e => {
                         e.preventDefault(); // don't follow link
-                        CURRENT_USER = new User(user.id, user.name, user.bio, user.username, user.email, user.is_active, user.reviews, user.favorite_fishing_spots, user.favorites)
+                        CURRENT_USER = new User(user)
                         clearMainContainer()
                         activateLinks()
-                        fetchFishingSpots().then(res => fetchFish()).then(res => renderFishingSpots(FISHING_SPOTS))
+                        fetchFishingSpots()
+                            .then(res => fetchFish())
+                            .then(res => fetchReviews())
+                            .then(res => renderFishingSpots(FISHING_SPOTS))
                     }
                     userLi.appendChild(a)
                     usersUl.appendChild(userLi)
@@ -351,7 +366,7 @@ function signUpUser() {
     submit.innerText = "Submit"
     signUpForm.addEventListener('submit', function(e) {
         e.preventDefault()
-        let userObj = new User(name.value, bio.value, usernameInput.value, email.value)
+        let userObj = new User({name: name.value, bio: bio.value, username: usernameInput.value, email: email.value})
         userObj.addNewUser()
         clearMainContainer()
         fetchFishingSpots()

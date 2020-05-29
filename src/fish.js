@@ -161,7 +161,7 @@ class Fish {
         // Description
         const descLabel = document.createElement("label")
         descLabel.htmlFor = "descField"
-        descLabel.innerText = "Latitude: "
+        descLabel.innerText = "Description: "
 
         const descField = document.createElement("input")
         descField.type = "text"
