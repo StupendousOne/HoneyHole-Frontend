@@ -4,10 +4,12 @@ const SPOT_URL = "http://localhost:3000/api/v1/fishing_spots/"
 const REVIEW_URL = "http://localhost:3000/api/v1/reviews/"
 const SPOT_FISH_URL = "http://localhost:3000/api/v1/fish_spots/"
 const FISH_URL = BASE_URL + "fish/"
+const FAV_URL = BASE_URL + "favorites/"
 
 let USERS = []
 let FISH = []
 let CURRENT_USER
+let FISHING_SPOTS = []
 const MAIN_CONTAINER = document.querySelector('main')
 
 // counter to how many columns have been made in the current row(max 3 for our purposes)

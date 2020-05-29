@@ -85,17 +85,25 @@ class FishingSpot {
             const favBtn = document.createElement('button')
             favBtn.classList.add('btn')
             favBtn.classList.add('btn-primary')
-            favBtn.dataset.toggle = "modal"
-            favBtn.dataset.target = `#infoModal`
 
             // handle CURRENT_USER array of favorite_fishing_spots to see if this is one of them and toggle innerText accordingly
-            const spotIds = CURRENT_USER.favorite_fishing_spots.map(spot => spot.id)
-            if (spotIds.includes(this.id)) {favBtn.innerText = "Unfavorite"}
+            const favSpotIds = CURRENT_USER.favorites.map(fav => fav.fishing_spot_id)
+            if (favSpotIds.includes(this.id)) {favBtn.innerText = "Unfavorite"}
             else {favBtn.innerText = "Favorite"}
 
             favBtn.addEventListener('click', () => {
-                if (spotIds.includes(this.id)) {this.unFavorite()}
-                else {this.favorite().then(fetchFishingSpots())}
+                if (favSpotIds.includes(this.id)) {
+                    let unFavSpot = CURRENT_USER.favorites.find(fav => fav.fishing_spot_id = this.id)
+                    let unFavId = unFavSpot.id
+                    this.unFavorite(unFavId)
+                    CURRENT_USER.favorites = CURRENT_USER.favorites.filter(favorite => favorite.id != unFavId)
+                    CURRENT_USER.favorite_fishing_spots = CURRENT_USER.favorite_fishing_spots.filter(fav => fav.id != this.id) 
+                    clearMainContainer()
+                    renderFishingSpots(FISHING_SPOTS)
+                }
+                else {
+                    this.favorite()
+                }
             })
 
             // remove fishing spot (toggle is_active status)
@@ -129,7 +137,6 @@ class FishingSpot {
         })
             .then(res => res.json())
             .then(res => console.log(res))
-            .then(res => fetchFishingSpots())
     }
 
     deleteFishingSpot() {
@@ -139,23 +146,17 @@ class FishingSpot {
     }
 
     // how do I get a 
-    unFavorite() {
-        fetch(SPOT_URL, { 
+    unFavorite(unFavId) {
+        fetch(FAV_URL + unFavId, { 
             method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                user_id: CURRENT_USER.id,
-                fishing_spot_id: this.id
-            })
         })
         .then(res => res.json())
         .then(res => console.log(res))
+        .then(res => console.log("unfavorite complete"))
     }
 
     favorite() {
-        return fetch(SPOT_URL, { 
+        return fetch(FAV_URL, { 
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -166,7 +167,12 @@ class FishingSpot {
             })
         })
         .then(res => res.json()) 
-        .then(res => console.log(res))
+        .then(res => {
+            CURRENT_USER.favorites.push(res)
+            CURRENT_USER.favorite_fishing_spots.push(FISHING_SPOTS.find(spot => spot.id == this.id))
+            clearMainContainer()
+            renderFishingSpots(FISHING_SPOTS)
+        })
     }
 
     addEditModal(spotObj) {
@@ -344,7 +350,7 @@ class FishingSpot {
             close.setAttribute("style", "display:block")
             close.addEventListener('click', () => {
                 clearMainContainer()
-                fetchFish().then(fetchFishingSpots())
+                fetchFish().then(fetchFishingSpots()).then(renderFishingSpots(FISHING_SPOTS))
             })
             spotObj.fish.forEach((fish) => addSpotFishFetch(spotObj, fish))
             deleteIds = deleteIds.map((id) => {
@@ -381,9 +387,12 @@ function editSpotFetch(params) {
 }
 
 function fetchFishingSpots(id=""){
-    fetch(SPOT_URL + id)
+    return fetch(SPOT_URL + id)
         .then(res => res.json())
-        .then(spots => renderFishingSpots(spots))
+        .then(spots => {
+            FISHING_SPOTS = spots
+            return FISHING_SPOTS
+        })
 }
 
 function renderFishingSpots(spots){
@@ -414,6 +423,7 @@ function addSpotFetch(params) {
         .then(res => res.json())
         .then(res => console.log(res))
         .then(res => fetchFishingSpots())
+        .then(res => renderFishingSpots(FISHING_SPOTS))
 }
 
 function addSpotFishFetch(spotObj, fish) {
