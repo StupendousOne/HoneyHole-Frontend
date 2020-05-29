@@ -153,8 +153,9 @@ class Fish {
         speciesField.type = "text"
         speciesField.className = "form-control"
         speciesField.id = "speciesField"
-        speciesField.value = this.species
-
+        if(!isNewFish)
+            speciesField.value = this.species
+ 
         //append label and field to form group
         formGroup1.append(speciesLabel, speciesField)
 
@@ -167,7 +168,8 @@ class Fish {
         descField.type = "text"
         descField.className = "form-control"
         descField.id = "descField"
-        descField.value = this.description
+        if(!isNewFish)
+            descField.value = this.description
 
         //append label and field to form group
         formGroup1.append(descLabel, descField)
@@ -181,7 +183,8 @@ class Fish {
         imgField.type = "text"
         imgField.className = "form-control"
         imgField.id = "imgField"
-        imgField.value = this.image
+        if(!isNewFish)
+            imgField.value = this.image
 
         //append label and field to form group
         formGroup1.append(imgLabel, imgField)
