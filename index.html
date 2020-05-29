@@ -20,12 +20,15 @@
     <header>
       <div class="row" id="header-row">
         <div class="dropdown col-lg-2">
-          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Menu
           <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#">HTML</a></li>
+            <li><a class="dropdown-item disabled user-link">User</a></li>
+            <li><a class="dropdown-item disabled spots-link">Fishing Spots</a></li>
+            <li><a class="dropdown-item disabled fish-link">Fish</a></li>
             <div class="dropdown-divider"></div>
-            <li><a href="#">JavaScript</a></li>
+            <li><a class="dropdown-item disabled new-spot" data-toggle="modal" data-target="#infoModal">Add a Fishing Spot</a></li>
+            <li><a class="dropdown-item disabled new-fish" data-toggle="modal" data-target="#infoModal">Add a Fish</a></li>
           </ul>
         </div>
         <h2 class="col-lg-3">Honey Hole App</h2>

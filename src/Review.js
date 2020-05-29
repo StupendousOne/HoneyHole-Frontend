@@ -33,45 +33,10 @@ class Review {
         return this.element
     }
 
-    // could rebuild this into expandReview... try css styling accordian style expand first on review above.
-    // expandUser(spots, reviews, div) {
-    //     // wipes children when user clicks expand again (to close)
-    //     if(div.lastChild) {
-    //         this.removeChildren(div)
-    //     // create ul for reviews & spots and appends
-    //     } else {
-    //         const revLabel = document.createElement('revLabel')
-    //         revLabel.innerText = 'Reviews:'
-    //         let rev_ul = document.createElement('ul')
-    //         reviews.forEach((review) => {
-    //             let rev_a = document.createElement('a') 
-    //             rev_a.innerText = review.title
-    //             // links to review
-    //             rev_a.href = BASE_URL + `reviews/${review.id}`
-    //             rev_ul.appendChild(rev_a)
-    //         })
-    //         const spotLabel = document.createElement('spotLabel')
-    //         spotLabel.innerText = 'Favorite spots:'
-    //         let spot_ul = document.createElement('ul')
-    //         spots.forEach((spot) => {
-    //             let spot_a = document.createElement('a') 
-    //             spot_a.innerText = spot.name
-    //             // links to fishing spot
-    //             spot_a.href = BASE_URL + `fishing_spots/${spot.id}`
-    //             spot_ul.appendChild(spot_a)
-    //         })
-    //         div.append(revLabel, rev_ul, spotLabel, spot_ul)
-    //         // returns div element to expandUser for appending
-    //         return div
-    //     }
-    // }
-
-    removeChildren(tag) {
-        while (tag.lastChild) {
-            tag.removeChild(tag.lastChild)
-        }
-        return tag
+    editReview(){
+        
     }
+
 }
 
 function fetchReviews(id=''){

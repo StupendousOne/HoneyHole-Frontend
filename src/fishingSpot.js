@@ -377,9 +377,12 @@ function editSpotFetch(params) {
 }
 
 function fetchFishingSpots(id=""){
-    fetch(SPOT_URL + id)
+    return fetch(SPOT_URL + id)
         .then(res => res.json())
-        .then(spots => renderFishingSpots(spots))
+        .then(spots => {
+            FISHING_SPOTS = spots
+            return FISHING_SPOTS
+        })
 }
 
 function renderFishingSpots(spots){

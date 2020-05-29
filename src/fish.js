@@ -1,12 +1,12 @@
 class Fish {
     
-    constructor(id, species, description, is_active, image, fishingSpots) {
-        this.id = id
-        this.species = species
-        this.description = description
-        this.is_active = is_active
-        this.image = image
-        this.fishingSpots = fishingSpots
+    constructor(fish) {
+        this.id = fish.id
+        this.species = fish.species
+        this.description = fish.description
+        this.is_active = fish.is_active
+        this.image = fish.image
+        this.fishingSpots = fish.fishing_spots
         this.element = document.createElement('div')
     }
 
@@ -112,8 +112,14 @@ class Fish {
         const header = document.querySelector("#infoModalTitle")
         const close = document.querySelector("#infoModalClose")
 
-        header.innerText = `Edit: ${this.species}`
-
+        let isNewFish = false
+        //check whether this is edit or new
+        if(this.id){
+            header.innerText = `Edit: ${this.species}`
+        } else {
+            header.innerText = `Create new Fish`
+            isNewFish = true
+        }
         //show close button in case it is hidden submit button
         close.setAttribute("style", "display:block")
 
@@ -159,7 +165,7 @@ class Fish {
         // Image
         const imgLabel = document.createElement("label")
         imgLabel.htmlFor = "descField"
-        imgLabel.innerText = "Longitude: "
+        imgLabel.innerText = "Image: "
 
         const imgField = document.createElement("input")
         imgField.type = "text"
@@ -175,7 +181,14 @@ class Fish {
         spotsLabel.innerText = "Fish Location:"
         const spotUl = document.createElement('ul')
 
-        const currentSpots = this.fishingSpots.map(fs => fs.id)
+        let currentSpots
+
+        if(!isNewFish){
+            currentSpots = this.fishingSpots.map(fs => fs.id)
+        } else {
+            currentSpots = []
+        }
+
 
         FISHING_SPOTS.forEach((spot) => {
             const spotLabel = document.createElement('label')
@@ -197,8 +210,11 @@ class Fish {
         submitBtn.classList.add("btn-primary")
         submitBtn.innerText = "Submit"
 
-        body.addEventListener("submit", (e) => updateFish(e, this))
-
+        if(!isNewFish){
+            body.addEventListener("submit", e => updateFish(e, this))
+        } else {
+            body.addEventListener("submit", e => addNewFish(e))
+        }
         //append everything to form and form to body
         form.append(formGroup1, submitBtn)
         body.appendChild(form)
@@ -288,27 +304,38 @@ function fetchFish(id=''){
 
 function renderFish(fish){
     fish.forEach((fish) => {
-        const newFish = new Fish(fish.id, fish.species, fish.description, fish.is_active, fish.image, fish.fishing_spots)
+        const newFish = new Fish(fish)
         const card = newFish.renderFish()
         rendersCard(card)
     })
 }
 
-function addNewFish(fish){
+function addNewFish(e){
+    debugger
+    e.preventDefault()
+    const formSpecies = e.target.querySelector("#speciesField").value
+    const formDesc = e.target.querySelector("#descField").value
+    const formImg = e.target.querySelector("#imgField").value
+
     fetch(FISH_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            species: fish.species,
-            description: fish.description,
+            species: formSpecies,
+            description: formDesc,
             is_active: true,
-            image: fish.image
+            image: formImg
         })
     })
     .then(res => res.json())
-    .then(res => this.fishingSpots.push(res))
+    .then(fish => {
+        console.log(fish)
+        FISH.push(fish)
+        newFish = new Fish(fish)
+        newFish.fillOutShowModal()
+    })
 }
 
 function modifyFish(id, params){

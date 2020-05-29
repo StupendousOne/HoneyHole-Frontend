@@ -13,6 +13,12 @@ class User {
         this.element = document.createElement('card')
     }
     renderUser() {
+        //If the user card has already been created just attach and return
+        if(this.element.lastChild){
+            MAIN_CONTAINER.appendChild(this.element)
+            return
+        }
+            
         // create card and put user name/username on it
         this.element.className = 'card'
         const name = document.createElement('p')
@@ -294,7 +300,8 @@ function userLogin() {
                         e.preventDefault(); // don't follow link
                         CURRENT_USER = new User(user.id, user.name, user.bio, user.username, user.email, user.is_active, user.reviews, user.favorite_fishing_spots)
                         clearMainContainer()
-                        // fetchFishingSpots()
+                        fetchFishingSpots().then(fetchFish())
+                        activateLinks()
                         CURRENT_USER.renderUser()
                     }
                     userLi.appendChild(a)

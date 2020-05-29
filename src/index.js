@@ -10,6 +10,11 @@ let FISH = []
 let CURRENT_USER
 let FISHING_SPOTS = []
 const MAIN_CONTAINER = document.querySelector('main')
+USER_LINK = document.querySelector(".user-link")
+SPOT_LINK = document.querySelector(".spots-link")
+FISH_LINK = document.querySelector(".fish-link")
+NEW_SPOT = document.querySelector(".new-spot")
+NEW_FISH  = document.querySelector(".new-fish")
 
 // counter to how many columns have been made in the current row(max 3 for our purposes)
 // start column count maxed out so a new row is created instantly
@@ -19,9 +24,54 @@ let CURRENT_ROW
 init()
 
 function init () {
-    //fetchUsers().then(userLogin())
-    fetchFishingSpots().then(spots => fetchFish()).then(fish => renderFish(fish))
-    
+    fetchUsers().then(userLogin())
+    setUpLinks()
+}
+
+function setUpLinks(){
+    USER_LINK.addEventListener("click", e => changeToUserView(e))
+    FISH_LINK.addEventListener("click", e => changeToFishView(e))
+    SPOT_LINK.addEventListener("click", e => changeToSpotView(e))
+    NEW_FISH.addEventListener("click", e => changeToAddFish(e))
+    NEW_SPOT.addEventListener("click", e => changeToAddSpot(e))
+}
+
+function activateLinks(){
+    USER_LINK.classList.remove("disabled")
+    FISH_LINK.classList.remove("disabled")
+    SPOT_LINK.classList.remove("disabled")
+    NEW_FISH.classList.remove("disabled")
+    NEW_SPOT.classList.remove("disabled")
+}
+
+function changeToUserView(e){
+    e.preventDefault()
+    clearMainContainer()
+    CURRENT_USER.renderUser()
+}
+
+function changeToFishView(e){
+    e.preventDefault()
+    clearMainContainer()
+    fetchFish().then(res => renderFish(FISH))
+}
+
+function changeToSpotView(e){
+    e.preventDefault()
+    clearMainContainer()
+    fetchFishingSpots().then(renderFishingSpots(FISHING_SPOTS))
+}
+
+function changeToAddFish(e){
+    e.preventDefault()
+    let newFish = new Fish({})
+    newFish.fillOutEditModal()
+}
+
+function changeToAddSpot(e){
+    e.preventDefault()
+    let spot = new FishingSpot()
+    spot.addEditModal(spot)
 }
 
 function rendersCard(card){
