@@ -31,10 +31,6 @@ class Fish {
             speciesTitle.dataset.id = this.id
             speciesTitle.className = "card-title"
             
-            // <button data-toggle="collapse" data-target="#demo">Collapsible</button>
-            // <div id="demo" class="collapse">
-            // Lorem ipsum dolor text....
-            // </div>
             const btnDiv = document.createElement("div")
             btnDiv.className = "mt-auto"
             const descBtn = document.createElement("button")

@@ -61,9 +61,19 @@ class FishingSpot {
             const br3 = document.createElement('br')
 
             this.fish.forEach((fish) => {
-                const fishLi = document.createElement('li')
-                fishLi.innerText = fish.species
-                fishUl.appendChild(fishLi)
+                const fishA = document.createElement('a')
+                fishA.innerText = fish.species
+                fishA.href = '#'
+                fishA.dataset.toggle = "modal"
+                fishA.dataset.target = `#infoModal`
+                // make a full fishObj out of this fish so that we can call Fish class method on it and view it in modal with edit functionality
+                let fullFishObj = FISH.find(f => f.id == fish.id)
+                const fishObj = new Fish(fish.id, fish.species, fish.description, fish.is_active, fish.image, fullFishObj.fishing_spots)
+
+                fishA.addEventListener('click', () => fishObj.fillOutShowModal())
+
+                const fishBr = document.createElement('br')
+                fishUl.append(fishA, fishBr)
             })
 
 
@@ -85,15 +95,26 @@ class FishingSpot {
             const favBtn = document.createElement('button')
             favBtn.classList.add('btn')
             favBtn.classList.add('btn-primary')
-            favBtn.dataset.toggle = "modal"
-            favBtn.dataset.target = `#infoModal`
 
             // handle CURRENT_USER array of favorite_fishing_spots to see if this is one of them and toggle innerText accordingly
-            const spotIds = CURRENT_USER.favorite_fishing_spots.map(spot => spot.id)
-            if (spotIds.includes(this.id)) {favBtn.innerText = "Unfavorite"}
+            const favSpotIds = CURRENT_USER.favorites.map(fav => fav.fishing_spot_id)
+            if (favSpotIds.includes(this.id)) {favBtn.innerText = "Unfavorite"}
             else {favBtn.innerText = "Favorite"}
 
-            favBtn.addEventListener('click', () => this.favorite())
+            favBtn.addEventListener('click', () => {
+                if (favSpotIds.includes(this.id)) {
+                    let unFavSpot = CURRENT_USER.favorites.find(fav => fav.fishing_spot_id = this.id)
+                    let unFavId = unFavSpot.id
+                    this.unFavorite(unFavId)
+                    CURRENT_USER.favorites = CURRENT_USER.favorites.filter(favorite => favorite.id != unFavId)
+                    CURRENT_USER.favorite_fishing_spots = CURRENT_USER.favorite_fishing_spots.filter(fav => fav.id != this.id) 
+                    clearMainContainer()
+                    renderFishingSpots(FISHING_SPOTS)
+                }
+                else {
+                    this.favorite()
+                }
+            })
 
             // remove fishing spot (toggle is_active status)
             const delBtn = document.createElement('button')
@@ -126,7 +147,6 @@ class FishingSpot {
         })
             .then(res => res.json())
             .then(res => console.log(res))
-            .then(res => fetchFishingSpots())
     }
 
     deleteFishingSpot() {
@@ -135,23 +155,18 @@ class FishingSpot {
             .then(res => console.log(res))
     }
 
-    unFavorite() {
-        fetch(SPOT_URL, { 
+    // how do I get a 
+    unFavorite(unFavId) {
+        fetch(FAV_URL + unFavId, { 
             method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                user_id: CURRENT_USER.id,
-                fishing_spot_id: this.id
-            })
         })
         .then(res => res.json())
         .then(res => console.log(res))
+        .then(res => console.log("unfavorite complete"))
     }
 
     favorite() {
-        fetch(SPOT_URL, { 
+        return fetch(FAV_URL, { 
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -161,8 +176,13 @@ class FishingSpot {
                 fishing_spot_id: this.id
             })
         })
-        .then(res => res.json())
-        .then(res => console.log(res))
+        .then(res => res.json()) 
+        .then(res => {
+            CURRENT_USER.favorites.push(res)
+            CURRENT_USER.favorite_fishing_spots.push(FISHING_SPOTS.find(spot => spot.id == this.id))
+            clearMainContainer()
+            renderFishingSpots(FISHING_SPOTS)
+        })
     }
 
     addEditModal(spotObj) {
@@ -315,6 +335,13 @@ class FishingSpot {
         //append label and field to form group
         formGroup1.append(fishLabel, fishUl)
 
+        // back button
+        const backBtn = document.createElement('button')
+        backBtn.classList.add('btn')
+        backBtn.classList.add('btn-secondary')
+        backBtn.setAttribute("data-dismiss", "modal") // dismisses modal when user clicks
+        backBtn.innerText = "Back"
+
         //create and append submit button
         const submitBtn = document.createElement("input")
         submitBtn.type = "submit"
@@ -323,7 +350,7 @@ class FishingSpot {
         submitBtn.innerText = "Submit"
 
         //append everything to form and form to body
-        form.append(formGroup1, submitBtn)
+        form.append(formGroup1, backBtn, submitBtn)
         body.appendChild(form)
 
         // add event listener that displays some result 
@@ -340,7 +367,7 @@ class FishingSpot {
             close.setAttribute("style", "display:block")
             close.addEventListener('click', () => {
                 clearMainContainer()
-                fetchFish().then(fetchFishingSpots())
+                fetchFish().then(fetchFishingSpots()).then(renderFishingSpots(FISHING_SPOTS))
             })
             spotObj.fish.forEach((fish) => addSpotFishFetch(spotObj, fish))
             deleteIds = deleteIds.map((id) => {
@@ -413,6 +440,7 @@ function addSpotFetch(params) {
         .then(res => res.json())
         .then(res => console.log(res))
         .then(res => fetchFishingSpots())
+        .then(res => renderFishingSpots(FISHING_SPOTS))
 }
 
 function addSpotFishFetch(spotObj, fish) {
