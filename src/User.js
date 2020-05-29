@@ -1,6 +1,6 @@
 class User {
     
-    constructor(id, name, bio, username, email, is_active, reviews, favorite_fishing_spots) {
+    constructor(id, name, bio, username, email, is_active, reviews, favorite_fishing_spots, favorites) {
 
         this.id = id
         this.name = name
@@ -10,6 +10,7 @@ class User {
         this.is_active = is_active
         this.reviews = reviews
         this.favorite_fishing_spots = favorite_fishing_spots
+        this.favorites = favorites
         this.element = document.createElement('card')
     }
     renderUser() {
@@ -65,7 +66,7 @@ class User {
             backBtn.innerText = "Back"
             backBtn.onclick = e => {
                 clearMainContainer()
-                fetchFishingSpots() // current user is stored in memory and user is sent to fishing spots page
+                fetchFishingSpots().then(res => renderFishingSpots(FISHING_SPOTS)) // current user is stored in memory and user is sent to fishing spots page
             }
 
             btnDiv.append(editBtn, backBtn)
@@ -291,7 +292,7 @@ function userLogin() {
                     a.href = '#' // makes it looks linky
                     a.onclick = e => {
                         e.preventDefault(); // don't follow link
-                        CURRENT_USER = new User(user.id, user.name, user.bio, user.username, user.email, user.is_active, user.reviews, user.favorite_fishing_spots)
+                        CURRENT_USER = new User(user.id, user.name, user.bio, user.username, user.email, user.is_active, user.reviews, user.favorite_fishing_spots, user.favorites)
                         clearMainContainer()
                         // fetchFishingSpots()
                         CURRENT_USER.renderUser()

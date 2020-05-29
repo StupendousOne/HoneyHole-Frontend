@@ -4,6 +4,7 @@ const SPOT_URL = "http://localhost:3000/api/v1/fishing_spots/"
 const REVIEW_URL = "http://localhost:3000/api/v1/reviews/"
 const SPOT_FISH_URL = "http://localhost:3000/api/v1/fish_spots/"
 const FISH_URL = BASE_URL + "fish/"
+const FAV_URL = BASE_URL + "favorites/"
 
 let USERS = []
 let FISH = []
