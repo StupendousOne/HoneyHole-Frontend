@@ -10,8 +10,6 @@ class Review {
         this.element = document.createElement('card')
     }
 
-    // have to pass in spots and reviews as they don't seem to want to come in with the user. =
-    // is this execution context issue? can we bind?
     renderReview() {
         // create card and put user title, username, and review content on it
         this.element.className = 'card'
@@ -73,5 +71,27 @@ class Review {
             tag.removeChild(tag.lastChild)
         }
         return tag
+    }
+}
+
+function fetchReviews(id=''){
+    fetch(REVIEW_URL + id)
+        .then(res => res.json())
+        .then(reviews => renderReviews(reviews))
+}
+
+function renderReviews(reviews){
+    if (Array.isArray(reviews) && reviews.length > 0) {
+        reviews.forEach((review) => {
+            const reviewObj = new Review(review.title, review.content, review.rating, review.reviewed_fishing_spots, review.user)
+            const card = reviewObj.renderReview()
+            rendersCard(card)
+        })
+    } else if (!Array.isArray(reviews)) {
+        const reviewObj = new Review(reviews.title, reviews.content, reviews.rating, reviews.fishing_spot_id, reviews.user_id)
+        const card = reviewObj.renderReview()
+        rendersCard(card)
+    } else {
+        console.log('error: inspect renderReview')
     }
 }

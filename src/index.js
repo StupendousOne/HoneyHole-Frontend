@@ -22,69 +22,6 @@ function init () {
     // fetchFishingSpots()
 }
 
-function fetchFishingSpots(id=""){
-    fetch(SPOT_URL + id)
-        .then(res => res.json())
-        .then(spots => renderFishingSpots(spots))
-}
-
-function fetchFish(id=''){
-    return fetch(FISH_URL + id)
-        .then(res => res.json())
-        .then(json => {
-            FISH = json
-            return FISH
-        })
-}
-
-function renderFishingSpots(spots){
-    spots.forEach(spot => {
-        const spotObj = new FishingSpot(spot.id, spot.name, spot.longitude, spot.latitude, spot.image, spot.image_small, spot.public_access, spot.user_id, spot.site_info, spot.is_active, spot.fish, spot.fish_spots, spot.created_at, spot.updated_at)
-        const card = spotObj.renderSpot()
-        rendersCard(card)
-    })
-}
-
-function renderFish(fish){
-    fish.forEach((fish) => {
-        const newFish = new Fish(fish.id, fish.species, fish.description, fish.is_active, fish.image, fish.fishing_spots)
-        const card = newFish.renderFish()
-        rendersCard(card)
-    })
-}
-
-function fetchUsers(id=''){
-    return fetch(USER_URL + id)
-        .then(res => res.json())
-        // .then(users => renderUsers(users))
-        .then(json => {
-            USERS = json
-            return USERS
-        })
-}
-
-function fetchReviews(id=''){
-    fetch(REVIEW_URL + id)
-        .then(res => res.json())
-        .then(reviews => renderReviews(reviews))
-}
-
-function renderReviews(reviews){
-    if (Array.isArray(reviews) && reviews.length > 0) {
-        reviews.forEach((review) => {
-            const reviewObj = new Review(review.title, review.content, review.rating, review.reviewed_fishing_spots, review.user)
-            const card = reviewObj.renderReview()
-            rendersCard(card)
-        })
-    } else if (!Array.isArray(reviews)) {
-        const reviewObj = new Review(reviews.title, reviews.content, reviews.rating, reviews.fishing_spot_id, reviews.user_id)
-        const card = reviewObj.renderReview()
-        rendersCard(card)
-    } else {
-        console.log('error: inspect renderReview')
-    }
-}
-
 function rendersCard(card){
     if(card){
         if(COLUMN_COUNT < 3){
